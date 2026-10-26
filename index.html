@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}[hidden]{display:none!important}</style></head><body>
+<title>KaizenPrep</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: LeetCode-style two-pane workspace; dashboard, list, plan and tracks as single-column pages. */
+.CodeMirror{font-family:monospace;height:300px;color:#000;direction:ltr}.CodeMirror-lines{padding:4px 0}.CodeMirror pre.CodeMirror-line,.CodeMirror pre.CodeMirror-line-like{padding:0 4px}.CodeMirror-gutter-filler,.CodeMirror-scrollbar-filler{background-color:#fff}.CodeMirror-gutters{border-right:1px solid #ddd;background-color:#f7f7f7;white-space:nowrap}.CodeMirror-linenumber{padding:0 3px 0 5px;min-width:20px;text-align:right;color:#999;white-space:nowrap}.CodeMirror-guttermarker{color:#000}.CodeMirror-guttermarker-subtle{color:#999}.CodeMirror-cursor{border-left:1px solid #000;border-right:none;width:0}.CodeMirror div.CodeMirror-secondarycursor{border-left:1px solid silver}.cm-fat-cursor .CodeMirror-cursor{width:auto;border:0!important;background:#7e7}.cm-fat-cursor div.CodeMirror-cursors{z-index:1}.cm-fat-cursor .CodeMirror-line::selection,.cm-fat-cursor .CodeMirror-line>span::selection,.cm-fat-cursor .CodeMirror-line>span>span::selection{background:0 0}.cm-fat-cursor .CodeMirror-line::-moz-selection,.cm-fat-cursor .CodeMirror-line>span::-moz-selection,.cm-fat-cursor .CodeMirror-line>span>span::-moz-selection{background:0 0}.cm-fat-cursor{caret-color:transparent}@-moz-keyframes blink{50%{background-color:transparent}}@-webkit-keyframes blink{50%{background-color:transparent}}@keyframes blink{50%{background-color:transparent}}.cm-tab{display:inline-block;text-decoration:inherit}.CodeMirror-rulers{position:absolute;left:0;right:0;top:-50px;bottom:0;overflow:hidden}.CodeMirror-ruler{border-left:1px solid #ccc;top:0;bottom:0;position:absolute}.cm-s-default .cm-header{color:#00f}.cm-s-default .cm-quote{color:#090}.cm-negative{color:#d44}.cm-positive{color:#292}.cm-header,.cm-strong{font-weight:700}.cm-em{font-style:italic}.cm-link{text-decoration:underline}.cm-strikethrough{text-decoration:line-through}.cm-s-default .cm-keyword{color:#708}.cm-s-default .cm-atom{color:#219}.cm-s-default .cm-number{color:#164}.cm-s-default .cm-def{color:#00f}.cm-s-default .cm-variable-2{color:#05a}.cm-s-default .cm-type,.cm-s-default .cm-variable-3{color:#085}.cm-s-default .cm-comment{color:#a50}.cm-s-default .cm-string{color:#a11}.cm-s-default .cm-string-2{color:#f50}.cm-s-default .cm-meta{color:#555}.cm-s-default .cm-qualifier{color:#555}.cm-s-default .cm-builtin{color:#30a}.cm-s-default .cm-bracket{color:#997}.cm-s-default .cm-tag{color:#170}.cm-s-default .cm-attribute{color:#00c}.cm-s-default .cm-hr{color:#999}.cm-s-default .cm-link{color:#00c}.cm-s-default .cm-error{color:red}.cm-invalidchar{color:red}.CodeMirror-composing{border-bottom:2px solid}div.CodeMirror span.CodeMirror-matchingbracket{color:#0b0}div.CodeMirror span.CodeMirror-nonmatchingbracket{color:#a22}.CodeMirror-matchingtag{background:rgba(255,150,0,.3)}.CodeMirror-activeline-background{background:#e8f2ff}.CodeMirror{position:relative;overflow:hidden;background:#fff}.CodeMirror-scroll{overflow:scroll!important;margin-bottom:-50px;margin-right:-50px;padding-bottom:50px;height:100%;outline:0;position:relative;z-index:0}.CodeMirror-sizer{position:relative;border-right:50px solid transparent}.CodeMirror-gutter-filler,.CodeMirror-hscrollbar,.CodeMirror-scrollbar-filler,.CodeMirror-vscrollbar{position:absolute;z-index:6;display:none;outline:0}.CodeMirror-vscrollbar{right:0;top:0;overflow-x:hidden;overflow-y:scroll}.CodeMirror-hscrollbar{bottom:0;left:0;overflow-y:hidden;overflow-x:scroll}.CodeMirror-scrollbar-filler{right:0;bottom:0}.CodeMirror-gutter-filler{left:0;bottom:0}.CodeMirror-gutters{position:absolute;left:0;top:0;min-height:100%;z-index:3}.CodeMirror-gutter{white-space:normal;height:100%;display:inline-block;vertical-align:top;margin-bottom:-50px}.CodeMirror-gutter-wrapper{position:absolute;z-index:4;background:0 0!important;border:none!important}.CodeMirror-gutter-background{position:absolute;top:0;bottom:0;z-index:4}.CodeMirror-gutter-elt{position:absolute;cursor:default;z-index:4}.CodeMirror-gutter-wrapper ::selection{background-color:transparent}.CodeMirror-gutter-wrapper ::-moz-selection{background-color:transparent}.CodeMirror-lines{cursor:text;min-height:1px}.CodeMirror pre.CodeMirror-line,.CodeMirror pre.CodeMirror-line-like{-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;border-width:0;background:0 0;font-family:inherit;font-size:inherit;margin:0;white-space:pre;word-wrap:normal;line-height:inherit;color:inherit;z-index:2;position:relative;overflow:visible;-webkit-tap-highlight-color:transparent;-webkit-font-variant-ligatures:contextual;font-variant-ligatures:contextual}.CodeMirror-wrap pre.CodeMirror-line,.CodeMirror-wrap pre.CodeMirror-line-like{word-wrap:break-word;white-space:pre-wrap;word-break:normal}.CodeMirror-linebackground{position:absolute;left:0;right:0;top:0;bottom:0;z-index:0}.CodeMirror-linewidget{position:relative;z-index:2;padding:.1px}.CodeMirror-rtl pre{direction:rtl}.CodeMirror-code{outline:0}.CodeMirror-gutter,.CodeMirror-gutters,.CodeMirror-linenumber,.CodeMirror-scroll,.CodeMirror-sizer{-moz-box-sizing:content-box;box-sizing:content-box}.CodeMirror-measure{position:absolute;width:100%;height:0;overflow:hidden;visibility:hidden}.CodeMirror-cursor{position:absolute;pointer-events:none}.CodeMirror-measure pre{position:static}div.CodeMirror-cursors{visibility:hidden;position:relative;z-index:3}div.CodeMirror-dragcursors{visibility:visible}.CodeMirror-focused div.CodeMirror-cursors{visibility:visible}.CodeMirror-selected{background:#d9d9d9}.CodeMirror-focused .CodeMirror-selected{background:#d7d4f0}.CodeMirror-crosshair{cursor:crosshair}.CodeMirror-line::selection,.CodeMirror-line>span::selection,.CodeMirror-line>span>span::selection{background:#d7d4f0}.CodeMirror-line::-moz-selection,.CodeMirror-line>span::-moz-selection,.CodeMirror-line>span>span::-moz-selection{background:#d7d4f0}.cm-searching{background-color:#ffa;background-color:rgba(255,255,0,.4)}.cm-force-border{padding-right:.1px}@media print{.CodeMirror div.CodeMirror-cursors{visibility:hidden}}.cm-tab-wrap-hack:after{content:''}span.CodeMirror-selectedtext{background:0 0}
+.cm-s-material-darker.CodeMirror{background-color:#212121;color:#eff}.cm-s-material-darker .CodeMirror-gutters{background:#212121;color:#545454;border:none}.cm-s-material-darker .CodeMirror-guttermarker,.cm-s-material-darker .CodeMirror-guttermarker-subtle,.cm-s-material-darker .CodeMirror-linenumber{color:#545454}.cm-s-material-darker .CodeMirror-cursor{border-left:1px solid #fc0}.cm-s-material-darker div.CodeMirror-selected{background:rgba(97,97,97,.2)}.cm-s-material-darker.CodeMirror-focused div.CodeMirror-selected{background:rgba(97,97,97,.2)}.cm-s-material-darker .CodeMirror-line::selection,.cm-s-material-darker .CodeMirror-line>span::selection,.cm-s-material-darker .CodeMirror-line>span>span::selection{background:rgba(128,203,196,.2)}.cm-s-material-darker .CodeMirror-line::-moz-selection,.cm-s-material-darker .CodeMirror-line>span::-moz-selection,.cm-s-material-darker .CodeMirror-line>span>span::-moz-selection{background:rgba(128,203,196,.2)}.cm-s-material-darker .CodeMirror-activeline-background{background:rgba(0,0,0,.5)}.cm-s-material-darker .cm-keyword{color:#c792ea}.cm-s-material-darker .cm-operator{color:#89ddff}.cm-s-material-darker .cm-variable-2{color:#eff}.cm-s-material-darker .cm-type,.cm-s-material-darker .cm-variable-3{color:#f07178}.cm-s-material-darker .cm-builtin{color:#ffcb6b}.cm-s-material-darker .cm-atom{color:#f78c6c}.cm-s-material-darker .cm-number{color:#ff5370}.cm-s-material-darker .cm-def{color:#82aaff}.cm-s-material-darker .cm-string{color:#c3e88d}.cm-s-material-darker .cm-string-2{color:#f07178}.cm-s-material-darker .cm-comment{color:#545454}.cm-s-material-darker .cm-variable{color:#f07178}.cm-s-material-darker .cm-tag{color:#ff5370}.cm-s-material-darker .cm-meta{color:#ffcb6b}.cm-s-material-darker .cm-attribute{color:#c792ea}.cm-s-material-darker .cm-property{color:#c792ea}.cm-s-material-darker .cm-qualifier{color:#decb6b}.cm-s-material-darker .cm-type,.cm-s-material-darker .cm-variable-3{color:#decb6b}.cm-s-material-darker .cm-error{color:#fff;background-color:#ff5370}.cm-s-material-darker .CodeMirror-matchingbracket{text-decoration:underline;color:#fff!important}
+:root {
+  --bg: #f7f8fa; --panel: #ffffff; --border: #e3e5e8; --text: #1a1a1a; --muted: #6b7280;
+  --accent: #2563eb; --accent-soft: #e8efff; --green: #16a34a; --green-soft: #e6f6ec;
+  --yellow: #d97706; --yellow-soft: #fff4e0; --red: #dc2626; --red-soft: #fdeaea;
+  --code-bg: #f1f3f5; --topbar: #ffffff; --shadow: 0 1px 2px rgba(0,0,0,.06);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  --mono: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1a1a1a; --panel: #262626; --border: #3a3a3a; --text: #eaeaea; --muted: #9aa0a6;
+  --accent: #60a5fa; --accent-soft: #1f2a44; --green: #4ade80; --green-soft: #13301f;
+  --yellow: #fbbf24; --yellow-soft: #3a2d10; --red: #f87171; --red-soft: #3b1a1a;
+  --code-bg: #1f1f1f; --topbar: #282828; --shadow: none;
+ color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #1a1a1a; --panel: #262626; --border: #3a3a3a; --text: #eaeaea; --muted: #9aa0a6;
+  --accent: #60a5fa; --accent-soft: #1f2a44; --green: #4ade80; --green-soft: #13301f;
+  --yellow: #fbbf24; --yellow-soft: #3a2d10; --red: #f87171; --red-soft: #3b1a1a;
+  --code-bg: #1f1f1f; --topbar: #282828; --shadow: none;
+ color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; display: flex; flex-direction: column; }
+a { color: var(--accent); text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+code, pre, .mono { font-family: var(--mono); }
+.hidden { display: none !important; }
+
+#topbar { height: 48px; display: flex; align-items: center; gap: 8px; padding-block: 0; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); background: var(--topbar); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+#topbar .brand { font-weight: 700; font-size: 16px; color: var(--text); margin-right: 16px; }
+#topbar .brand span { color: var(--yellow); }
+#topbar nav { display: flex; gap: 4px; }
+#topbar nav a { color: var(--muted); padding: 6px 10px; border-radius: 6px; font-weight: 500; }
+#topbar nav a.active, #topbar nav a:hover { color: var(--text); background: var(--accent-soft); }
+#topbar .spacer { flex: 1; }
+#mock-timer { font-family: var(--mono); font-weight: 600; padding: 4px 10px; border-radius: 6px; background: var(--yellow-soft); color: var(--yellow); }
+#mock-timer.late { background: var(--red-soft); color: var(--red); }
+.icon-btn { background: transparent; border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 4px 8px; }
+.icon-btn:hover { background: var(--accent-soft); }
+
+main { flex: 1; min-height: 0; overflow: auto; }
+.page { max-width: 1100px; margin: 0 auto; padding-block: 24px 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.page h1 { font-size: 24px; margin: 0 0 6px; }
+.page h2 { font-size: 18px; margin: 28px 0 10px; }
+.page p.lead { color: var(--muted); margin: 0 0 16px; max-width: 760px; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; box-shadow: var(--shadow); }
+.grid { display: grid; gap: 14px; }
+.grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 800px) { .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; } }
+.stat { font-size: 28px; font-weight: 700; }
+.stat small { font-size: 13px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+.bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: 6px; }
+.bar > i { display: block; height: 100%; background: var(--accent); }
+.bar.easy > i { background: var(--green); } .bar.medium > i { background: var(--yellow); } .bar.hard > i { background: var(--red); }
+.row { display: flex; align-items: center; gap: 10px; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+
+.pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--code-bg); color: var(--muted); }
+.pill.easy { background: var(--green-soft); color: var(--green); }
+.pill.medium { background: var(--yellow-soft); color: var(--yellow); }
+.pill.hard { background: var(--red-soft); color: var(--red); }
+.pill.company { background: var(--accent-soft); color: var(--accent); }
+.pill.company.google { background: #e8f0fe; color: #1a56db; }
+.pill.company.apple { background: #ececec; color: #333; }
+:root[data-theme="dark"] .pill.company.google { background: #1f2a44; color: #8ab4f8; }
+:root[data-theme="dark"] .pill.company.apple { background: #3a3a3a; color: #ddd; }
+
+.btn { border: 1px solid var(--border); background: var(--panel); color: var(--text); padding: 6px 12px; border-radius: 6px; font-weight: 500; }
+.btn:hover { background: var(--accent-soft); }
+.btn.primary { background: var(--green); color: #fff; border-color: var(--green); }
+.btn.primary:hover { filter: brightness(1.1); }
+.btn.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.sm { padding: 3px 8px; font-size: 12px; }
+.btn:disabled { opacity: .5; cursor: default; }
+
+/* problem list */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.filters input, .filters select { font: inherit; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); }
+.filters input { min-width: 220px; }
+table.plist { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+table.plist th, table.plist td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+table.plist th { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
+table.plist tr:last-child td { border-bottom: 0; }
+table.plist tbody tr:hover { background: var(--accent-soft); }
+table.plist td.status { width: 36px; text-align: center; }
+.st-solved { color: var(--green); } .st-attempted { color: var(--yellow); }
+.star { cursor: pointer; color: var(--muted); } .star.on { color: var(--yellow); }
+.chips { display: flex; gap: 4px; flex-wrap: wrap; }
+
+/* problem page */
+.workspace { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 48px); }
+@media (max-width: 900px) { .workspace { grid-template-columns: 1fr; height: auto; } .workspace .pane { height: auto; min-height: 50vh; } }
+.pane { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border); background: var(--panel); }
+.pane:last-child { border-right: 0; }
+.pane-tabs { display: flex; gap: 2px; padding: 6px 8px 0; border-bottom: 1px solid var(--border); background: var(--bg); flex-shrink: 0; align-items: center; }
+.pane-tabs button { background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); padding: 8px 10px; font-weight: 500; }
+.pane-tabs button.active { color: var(--text); border-bottom-color: var(--accent); }
+.pane-tabs .spacer { flex: 1; }
+.pane-body { flex: 1; min-height: 0; overflow: auto; padding: 16px 20px; }
+.ptitle { font-size: 20px; font-weight: 700; margin: 0 0 8px; }
+.desc p { line-height: 1.6; margin: 0 0 12px; }
+.desc code, .md code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+.desc pre, .md pre { background: var(--code-bg); padding: 10px 12px; border-radius: 6px; overflow: auto; font-size: 13px; line-height: 1.5; }
+.desc pre code, .md pre code { background: transparent; padding: 0; }
+.md h3, .md h2 { font-size: 15px; margin: 18px 0 6px; }
+.md ul, .md ol { padding-left: 22px; line-height: 1.6; }
+.md p { line-height: 1.6; margin: 0 0 12px; }
+.example { background: var(--code-bg); border-radius: 6px; padding: 10px 12px; margin: 8px 0 14px; font-size: 13px; }
+.example b { display: inline-block; min-width: 86px; }
+.example div { margin: 2px 0; }
+details.hint { margin: 6px 0; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; }
+details.hint summary { cursor: pointer; font-weight: 500; color: var(--accent); }
+.sec-title { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 18px 0 6px; font-weight: 600; }
+ul.similar { padding-left: 0; list-style: none; }
+ul.similar li { padding: 4px 0; }
+.editor-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.editor-toolbar { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); flex-shrink: 0; }
+.editor-toolbar .spacer { flex: 1; }
+.CodeMirror { flex: 1; height: auto; min-height: 0; font-family: var(--mono); font-size: 13px; line-height: 1.5; }
+.editor-wrap > .CodeMirror { height: 100%; }
+textarea.plain-editor { flex: 1; font-family: var(--mono); font-size: 13px; padding: 10px; border: 0; background: var(--panel); color: var(--text); resize: none; outline: none; }
+.console { height: 38%; min-height: 180px; border-top: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
+.console .pane-body { padding: 10px 14px; }
+.case-tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.case-tabs button { background: var(--code-bg); border: 0; border-radius: 6px; padding: 4px 10px; color: var(--muted); }
+.case-tabs button.active { background: var(--accent-soft); color: var(--text); }
+.case-tabs button.pass { color: var(--green); } .case-tabs button.fail { color: var(--red); }
+.kv { margin: 6px 0; }
+.kv label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+.kv pre, .kv textarea { margin: 0; background: var(--code-bg); border-radius: 6px; padding: 8px 10px; font-size: 13px; width: 100%; border: 0; color: var(--text); font-family: var(--mono); }
+.kv textarea { min-height: 54px; resize: vertical; }
+.verdict { font-size: 18px; font-weight: 700; margin: 4px 0 8px; }
+.verdict.ok { color: var(--green); } .verdict.bad { color: var(--red); }
+.verdict small { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: 8px; }
+.runbar { display: flex; gap: 8px; align-items: center; }
+.stopwatch { font-family: var(--mono); font-size: 12px; min-width: 56px; text-align: center; }
+.rate { display: flex; gap: 6px; align-items: center; margin-top: 10px; }
+.sub-row { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); cursor: pointer; align-items: center; }
+.sub-row .ok { color: var(--green); font-weight: 600; } .sub-row .bad { color: var(--red); font-weight: 600; }
+textarea.note { width: 100%; min-height: 220px; font: inherit; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); }
+
+/* plan and tracks */
+details.week { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px; margin-bottom: 10px; }
+details.week summary { cursor: pointer; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+details.week summary .pill { margin-left: auto; }
+.day { margin: 10px 0; }
+.day h4 { margin: 0 0 4px; font-size: 13px; color: var(--muted); }
+.day ul { margin: 0; padding-left: 0; list-style: none; }
+.day li { padding: 3px 0; display: flex; gap: 8px; align-items: center; }
+ol.steps { line-height: 1.6; padding-left: 20px; }
+ul.plain { line-height: 1.6; padding-left: 20px; }
+.track-list li { display: flex; gap: 8px; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.track-list { list-style: none; padding: 0; margin: 0; }
+.score { font-family: var(--mono); font-size: 11px; color: var(--muted); min-width: 26px; }
+.mix { display: grid; grid-template-columns: 180px 1fr 40px; gap: 6px 10px; align-items: center; font-size: 13px; }
+.notice { background: var(--yellow-soft); color: var(--text); border-left: 3px solid var(--yellow); padding: 8px 12px; border-radius: 6px; margin: 12px 0; font-size: 13px; }
+.heat { display: grid; grid-template-columns: repeat(30, 10px); gap: 3px; }
+.heat i { width: 10px; height: 10px; border-radius: 2px; background: var(--border); display: block; }
+.heat i.on { background: var(--green); }
+kbd { font-family: var(--mono); font-size: 11px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; }
+
+html, body { height: 100%; }
+.pane-body, .page { min-width: 0; }
+
+</style>
+<header id="topbar">
+  <a class="brand" href="#/">Kaizen<span>Prep</span></a>
+  <nav>
+    <a href="#/" data-nav="/">Dashboard</a>
+    <a href="#/problems" data-nav="/problems">Problems</a>
+    <a href="#/plan" data-nav="/plan">Study plan</a>
+    <a href="#/patterns" data-nav="/patterns">Patterns</a>
+    <a href="#/track/google" data-nav="/track/google">Google</a>
+    <a href="#/track/apple" data-nav="/track/apple">Apple</a>
+    <a href="#/mock" data-nav="/mock">Mock</a>
+  </nav>
+  <div class="spacer"></div>
+  <div id="mock-timer" class="hidden"></div>
+  <button id="theme-btn" class="icon-btn" title="Toggle theme">◐</button>
+</header>
+<main id="app"></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script>
+/* In-browser replacement for server.py: same URL contract, data from static JSON files,
+   progress in localStorage, judging in a Pyodide Web Worker. Loaded before app.js. */
+(function () {
+  const TIMEOUT_MS = 12000;
+  const PKEY = 'prepcode:progress';
+  let index = null, tracksData = null, patternsData = null;
+  const problemCache = {};
+
+  const fetchJson = (u) => fetch(u).then(r => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); });
+  async function loadIndex() {
+    if (!index) {
+      [index, tracksData, patternsData] = await Promise.all([fetchJson('data/index.json'), fetchJson('data/tracks.json'), fetchJson('data/patterns.json')]);
+    }
+    return index;
+  }
+  async function loadProblem(id) {
+    if (!problemCache[id]) problemCache[id] = await fetchJson('data/problems/' + id + '.json');
+    return problemCache[id];
+  }
+
+  // ---------- progress ----------
+  function loadProgress() { try { return JSON.parse(localStorage.getItem(PKEY)) || { problems: {}, submissions: [] }; } catch { return { problems: {}, submissions: [] }; } }
+  function saveProgress(d) { try { localStorage.setItem(PKEY, JSON.stringify(d)); } catch {} }
+  const today = () => new Date().toISOString().slice(0, 10);
+  const plusDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+  const nowIso = () => new Date().toISOString().slice(0, 19);
+  const INTERVALS = () => (tracksData && tracksData.intervals) || [1, 3, 7, 14, 30, 60];
+
+  function recordSubmission(pid, code, result) {
+    const data = loadProgress();
+    const p = data.problems[pid] = data.problems[pid] || {};
+    const accepted = result.status === 'Accepted';
+    p.attempts = (p.attempts || 0) + 1; p.last_status = result.status; p.last_at = nowIso();
+    if (accepted) {
+      const level = p.level || 0; const iv = INTERVALS();
+      p.level = level + 1; p.status = 'solved'; p.solved_at = p.solved_at || today();
+      p.next_review = plusDays(iv[Math.min(level, iv.length - 1)]); p.accepted_code = code;
+    } else if (p.status === 'solved') { p.level = Math.max(0, (p.level || 1) - 1); p.next_review = plusDays(1); }
+    else p.status = 'attempted';
+    p.draft = code;
+    data.submissions.push({ id: pid, status: result.status, passed: result.passed, total: result.total, ms: result.ms, at: p.last_at, code });
+    data.submissions = data.submissions.slice(-500);
+    saveProgress(data);
+    return p;
+  }
+  function rateReview(pid, rating) {
+    const data = loadProgress(); const p = data.problems[pid] = data.problems[pid] || {}; const iv = INTERVALS();
+    let level = p.level || 0;
+    if (rating === 'again') level = 0; else if (rating === 'hard') level = Math.max(0, level - 1); else if (rating === 'easy') level += 1;
+    p.level = level; p.next_review = plusDays(iv[Math.min(level, iv.length - 1)]); saveProgress(data); return p;
+  }
+  function stats(problems) {
+    const data = loadProgress(); const prog = data.problems;
+    const by_difficulty = { Easy: [0, 0], Medium: [0, 0], Hard: [0, 0] }; const by_pattern = {};
+    let solved = 0, attempted = 0;
+    for (const p of problems) {
+      const e = prog[p.id] || {}; by_difficulty[p.difficulty][1]++; (by_pattern[p.pattern] = by_pattern[p.pattern] || [0, 0])[1]++;
+      if (e.status === 'solved') { solved++; by_difficulty[p.difficulty][0]++; by_pattern[p.pattern][0]++; } else if (e.status === 'attempted') attempted++;
+    }
+    const days = new Set(data.submissions.filter(s => s.status === 'Accepted').map(s => s.at.slice(0, 10)));
+    let streak = 0; const d = new Date(); if (!days.has(d.toISOString().slice(0, 10))) d.setDate(d.getDate() - 1);
+    while (days.has(d.toISOString().slice(0, 10))) { streak++; d.setDate(d.getDate() - 1); }
+    return { solved, attempted, total: problems.length, by_difficulty, by_pattern, streak, active_days: [...days].sort().slice(-120) };
+  }
+  function dueReviews(problems) {
+    const prog = loadProgress().problems; const t = today();
+    return problems.filter(p => { const e = prog[p.id]; return e && e.status === 'solved' && (e.next_review || '9999') <= t; })
+      .map(p => ({ id: p.id, title: p.title, difficulty: p.difficulty, pattern: p.pattern, due: prog[p.id].next_review })).sort((a, b) => a.due < b.due ? -1 : 1);
+  }
+
+  // ---------- tracks and plan ----------
+  const DIFF = { Easy: 0, Medium: 1, Hard: 2 };
+  function companyTrack(problems, company) {
+    const g = tracksData.guides[company]; const byId = Object.fromEntries(problems.map(p => [p.id, p]));
+    const must = g.must_do.map(i => byId[i]).filter(Boolean); const mustIds = new Set(must.map(p => p.id));
+    const sc = (p) => (p.companies || {})[company] || 0;
+    const rest = problems.filter(p => sc(p) >= 3 && !mustIds.has(p.id)).sort((a, b) => sc(b) - sc(a) || DIFF[a.difficulty] - DIFF[b.difficulty] || a.number - b.number);
+    const freq = problems.filter(p => sc(p) >= 1).sort((a, b) => sc(b) - sc(a) || a.number - b.number);
+    const prog = loadProgress().problems;
+    const brief = (p) => ({ id: p.id, number: p.number, title: p.title, difficulty: p.difficulty, pattern: p.pattern, score: sc(p), status: (prog[p.id] || {}).status });
+    const weight = {}; for (const p of freq) weight[p.pattern] = (weight[p.pattern] || 0) + sc(p);
+    const total = Object.values(weight).reduce((a, b) => a + b, 0) || 1;
+    const pattern_mix = Object.entries(weight).map(([pattern, v]) => ({ pattern, share: Math.round(100 * v / total) })).sort((a, b) => b.share - a.share);
+    return { company, name: g.name, summary: g.summary, process: g.process, focus: g.focus, tips: g.tips, must_do: must.map(brief), also: rest.map(brief), all_by_frequency: freq.map(brief), pattern_mix };
+  }
+  function studyPlan(problems) {
+    const prog = loadProgress().problems;
+    const weeks = tracksData.weeks.map(([title, patterns], wi) => {
+      const week = wi + 1;
+      const pool = problems.filter(p => patterns.includes(p.pattern)).sort((a, b) => patterns.indexOf(a.pattern) - patterns.indexOf(b.pattern) || DIFF[a.difficulty] - DIFF[b.difficulty] || a.number - b.number);
+      const days = [[], [], [], [], [], []];
+      pool.forEach((p, i) => days[i % 6].push({ id: p.id, number: p.number, title: p.title, difficulty: p.difficulty, pattern: p.pattern, status: (prog[p.id] || {}).status }));
+      const extras = week === 8 ? ['Two full mock interviews (use the Mock tab): one Google-style, one Apple-style.', "Re-solve every problem marked 'again' or 'hard' in reviews.", 'Write out your 6 behavioural STAR stories and rehearse them aloud.'] : week === 5 ? ['Mid-point mock interview: one graph problem, 45 minutes, no hints.'] : [];
+      return { week, title, patterns, days, extras, done: days.flat().filter(p => p.status === 'solved').length, total: pool.length };
+    });
+    return { weeks, daily_routine: ['Warm-up (10 min): one review-due problem from the Reviews list, from memory.', 'New problems (60-90 min): the day\'s list. Spend at most 25 minutes before opening a hint, 40 before the editorial.', 'After each problem: read the editorial even if you passed, and write one line in Notes about the key idea.', 'Wrap-up (5 min): re-explain today\'s hardest problem out loud as if to an interviewer.'] };
+  }
+
+  // ---------- judge ----------
+  let worker = null, seq = 0; const pending = {};
+  function getWorker() {
+    if (!worker) {
+      worker = new Worker('judge-worker.js');
+      worker.onmessage = (ev) => { const cb = pending[ev.data.id]; if (cb) { delete pending[ev.data.id]; cb(ev.data); } };
+      worker.onerror = (e) => { for (const k of Object.keys(pending)) { pending[k]({ fatal: 'Worker error: ' + e.message }); delete pending[k]; } };
+    }
+    return worker;
+  }
+  function execute(code, problem, tests) {
+    return new Promise((resolve) => {
+      const id = ++seq; const w = getWorker();
+      const timer = setTimeout(() => { delete pending[id]; w.terminate(); worker = null; resolve({ timeout: true }); }, TIMEOUT_MS + (seq === 1 ? 30000 : 0));
+      pending[id] = (msg) => { clearTimeout(timer); resolve(msg); };
+      w.postMessage({ id, code, tests, spec: { kind: problem.kind || 'function', function: problem.function, class_name: problem.class_name, arg_types: problem.arg_types || {}, return_type: problem.return_type || '', output_mode: problem.output_mode || 'return' } });
+    });
+  }
+  const norm = (v, mode) => mode === 'unordered_nested' ? (v || []).map(x => JSON.stringify(Array.isArray(x) ? [...x].sort((a, b) => a < b ? -1 : a > b ? 1 : 0) : x)).sort() : (v || []).map(x => JSON.stringify(x)).sort();
+  function compare(expected, actual, mode, tol) {
+    tol = tol || 1e-5;
+    if (mode === 'any_of') return expected.some(e => compare(e, actual, 'exact', tol));
+    if (mode === 'float') { try { if (Array.isArray(expected)) return expected.length === actual.length && expected.every((a, i) => Math.abs(+a - +actual[i]) <= tol); return Math.abs(+expected - +actual) <= tol; } catch { return false; } }
+    if (mode === 'unordered' || mode === 'unordered_nested') { const a = norm(expected, mode), b = norm(actual, mode); return a.length === b.length && a.every((x, i) => x === b[i]); }
+    return JSON.stringify(expected) === JSON.stringify(actual);
+  }
+  async function runCode(code, problem, tests) {
+    const t0 = performance.now();
+    const msg = await execute(code, problem, tests);
+    const ms = Math.round(performance.now() - t0);
+    if (msg.timeout) return { status: 'Time Limit Exceeded', passed: 0, total: tests.length, cases: [], stderr: 'Execution exceeded ' + (TIMEOUT_MS / 1000) + 's. Check for an infinite loop or an exponential algorithm.', ms };
+    if (msg.fatal) return { status: 'Runtime Error', passed: 0, total: tests.length, cases: [], stderr: msg.fatal, ms };
+    if (msg.error) return { status: msg.error.includes('SyntaxError') || msg.error.includes('IndentationError') ? 'Compile Error' : 'Runtime Error', passed: 0, total: tests.length, cases: [], stderr: msg.error, stdout: msg.stdout, ms };
+    const mode = problem.compare || 'exact'; const cases = []; let passed = 0, status = 'Accepted';
+    tests.forEach((t, i) => {
+      const r = msg.results[i] || {};
+      if (r.ok) { const ok = compare(t.output, r.output, mode, problem.tolerance); passed += ok; cases.push({ input: t.input, expected: t.output, output: r.output, ok, ms: r.ms }); if (!ok && status === 'Accepted') status = 'Wrong Answer'; }
+      else { cases.push({ input: t.input, expected: t.output, output: null, ok: false, error: r.error, trace: r.trace }); status = 'Runtime Error'; }
+    });
+    return { status, passed, total: tests.length, cases, stdout: msg.stdout, ms };
+  }
+  const visibleTests = (p) => p.tests.slice(0, Math.max(2, Math.min(3, p.examples.length)));
+
+  // ---------- API ----------
+  function summary(p, prog) { const e = prog[p.id] || {}; return { ...p, status: e.status, starred: !!e.starred, next_review: e.next_review, attempts: e.attempts || 0 }; }
+  async function problemPayload(id) {
+    const idx = await loadIndex(); const p = await loadProblem(id); const e = loadProgress().problems[id] || {};
+    const byId = Object.fromEntries(idx.problems.map(x => [x.id, x])); const i = p.number - 1;
+    const prev = idx.problems[i - 1], next = idx.problems[i + 1];
+    const subs = loadProgress().submissions.filter(s => s.id === id).reverse().slice(0, 20);
+    return { ...p, similar: (p.similar || []).filter(s => byId[s]).map(s => ({ id: s, title: byId[s].title, difficulty: byId[s].difficulty })), followups: p.followups || [], kind: p.kind || 'function',
+      draft: e.draft, note: e.note || '', starred: !!e.starred, status: e.status, level: e.level || 0, next_review: e.next_review,
+      visible_tests: visibleTests(p), hidden_count: p.tests.length - visibleTests(p).length, prev: prev ? { id: prev.id, title: prev.title } : null, next: next ? { id: next.id, title: next.title } : null, submissions: subs };
+  }
+
+  window.PrepAPI = {
+    async get(url) {
+      const [path, qs] = url.split('?'); const idx = await loadIndex(); const prog = loadProgress().problems;
+      if (path === '/api/problems') return { problems: idx.problems.map(p => summary(p, prog)), patterns: idx.patterns };
+      if (path.startsWith('/api/problem/')) return problemPayload(path.split('/')[3]);
+      if (path === '/api/stats') return { stats: stats(idx.problems), reviews: dueReviews(idx.problems) };
+      if (path === '/api/random') { const un = idx.problems.filter(p => (prog[p.id] || {}).status !== 'solved'); const pool = un.length ? un : idx.problems; return { id: pool[Math.floor(Math.random() * pool.length)].id }; }
+      if (path.startsWith('/api/track/')) return companyTrack(idx.problems, path.split('/')[3]);
+      if (path === '/api/plan') return studyPlan(idx.problems);
+      if (path === '/api/patterns') return patternsData;
+      if (path === '/api/mock') { const company = (qs || '').replace('company=', '') || 'google'; const t = companyTrack(idx.problems, company); const pool = [...t.must_do, ...t.also].filter(p => p.difficulty !== 'Easy'); const pick = []; const src = pool.length ? [...pool] : [...t.all_by_frequency]; while (pick.length < 2 && src.length) pick.push(src.splice(Math.floor(Math.random() * src.length), 1)[0]); return { company, problems: pick, minutes: 45 }; }
+      return { error: 'unknown endpoint' };
+    },
+    async post(url, body) {
+      const pid = body.id;
+      if (url === '/api/run' || url === '/api/submit') {
+        const p = await loadProblem(pid); const code = body.code || '';
+        if (url === '/api/run') {
+          let tests = visibleTests(p); if (body.custom) tests = tests.concat(body.custom.map(c => ({ input: c, output: null })));
+          const res = await runCode(code, p, tests); this.post('/api/draft', { id: pid, code });
+          for (const c of res.cases) if (c.expected === null) { c.ok = !c.error; c.custom = true; }
+          const graded = res.cases.filter(c => !c.custom);
+          if (res.cases.length) { if (res.status === 'Wrong Answer' || res.status === 'Accepted') res.status = graded.every(c => c.ok) ? 'Accepted' : 'Wrong Answer'; res.passed = graded.filter(c => c.ok).length; res.total = graded.length; }
+          return res;
+        }
+        const res = await runCode(code, p, p.tests); const entry = recordSubmission(pid, code, res);
+        res.entry = { status: entry.status, level: entry.level, next_review: entry.next_review, attempts: entry.attempts }; return res;
+      }
+      const data = loadProgress(); const e = data.problems[pid] = data.problems[pid] || {};
+      if (url === '/api/draft') { e.draft = body.code; e.draft_at = nowIso(); saveProgress(data); return { ok: true }; }
+      if (url === '/api/note') { e.note = body.note; saveProgress(data); return { ok: true }; }
+      if (url === '/api/star') { e.starred = !e.starred; saveProgress(data); return { starred: e.starred }; }
+      if (url === '/api/rate') return rateReview(pid, body.rating || 'hard');
+      return { error: 'unknown endpoint' };
+    },
+    warm() { try { getWorker(); } catch {} },
+  };
+})();
+
+</script>
+<script>
+/* KaizenPrep front end: hash-routed single page app, no build step. */
+(function () {
+  const app = document.getElementById('app');
+  const api = window.PrepAPI || {
+    get: (u) => fetch(u).then(r => r.json()),
+    post: (u, body) => fetch(u, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  };
+  const STATIC = !!window.PrepAPI;
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  };
+
+  // ---------- theme ----------
+  function applyTheme() {
+    const t = store.get('theme', matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.dataset.theme = t;
+  }
+  document.getElementById('theme-btn').onclick = () => {
+    store.set('theme', document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+    applyTheme();
+    if (window._cm) window._cm.setOption('theme', document.documentElement.dataset.theme === 'dark' ? 'material-darker' : 'default');
+  };
+  applyTheme();
+
+  // ---------- tiny markdown ----------
+  function md(src) {
+    const lines = String(src || '').split('\n');
+    let out = '', i = 0, inList = null;
+    const inline = (s) => esc(s)
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/(^|[^*])\*([^*]+)\*(?!\*)/g, '$1<em>$2</em>');
+    const closeList = () => { if (inList) { out += `</${inList}>`; inList = null; } };
+    while (i < lines.length) {
+      const l = lines[i];
+      if (l.startsWith('```')) {
+        closeList();
+        let code = ''; i++;
+        while (i < lines.length && !lines[i].startsWith('```')) { code += lines[i] + '\n'; i++; }
+        out += `<pre><code>${esc(code)}</code></pre>`; i++; continue;
+      }
+      const h = l.match(/^(#{1,4})\s+(.*)/);
+      if (h) { closeList(); out += `<h3>${inline(h[2])}</h3>`; i++; continue; }
+      const ul = l.match(/^\s*[-*]\s+(.*)/), ol = l.match(/^\s*\d+[.)]\s+(.*)/);
+      if (ul || ol) {
+        const tag = ul ? 'ul' : 'ol';
+        if (inList !== tag) { closeList(); out += `<${tag}>`; inList = tag; }
+        out += `<li>${inline((ul || ol)[1])}</li>`; i++; continue;
+      }
+      if (l.trim() === '') { closeList(); i++; continue; }
+      closeList();
+      let para = l; i++;
+      while (i < lines.length && lines[i].trim() !== '' && !/^(#{1,4}\s|\s*[-*]\s|\s*\d+[.)]\s|```)/.test(lines[i])) { para += ' ' + lines[i]; i++; }
+      out += `<p>${inline(para)}</p>`;
+    }
+    closeList();
+    return out;
+  }
+
+  // ---------- router ----------
+  const routes = [];
+  function route(re, fn) { routes.push([re, fn]); }
+  let currentRoute = null;
+  function go(path) { currentRoute = path; try { if (location.hash !== '#' + path) history.replaceState(null, '', '#' + path); } catch {} render(); }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#/"]'); if (!a) return;
+    e.preventDefault(); go(a.getAttribute('href').slice(1));
+  });
+  async function render() {
+    const hash = currentRoute || (location.hash.startsWith('#/') ? location.hash.slice(1) : '/');
+    document.title = 'KaizenPrep';
+    document.querySelectorAll('#topbar nav a').forEach(a => a.classList.toggle('active', hash === a.dataset.nav || (a.dataset.nav !== '/' && hash.startsWith(a.dataset.nav))));
+    if (window._cm) { window._cm = null; }
+    if (window._stopwatch) { clearInterval(window._stopwatch); window._stopwatch = null; }
+    for (const [re, fn] of routes) {
+      const m = hash.match(re);
+      if (m) { app.innerHTML = '<div class="page muted">Loading…</div>'; await fn(...m.slice(1)); window.scrollTo(0, 0); return; }
+    }
+    app.innerHTML = '<div class="page">Not found.</div>';
+  }
+  window.addEventListener('hashchange', () => { currentRoute = null; render(); });
+
+  const diffPill = (d) => `<span class="pill ${d.toLowerCase()}">${d}</span>`;
+  const statusIcon = (s) => s === 'solved' ? '<span class="st-solved" title="Solved">✔</span>' : s === 'attempted' ? '<span class="st-attempted" title="Attempted">◔</span>' : '<span class="muted">·</span>';
+  const companyChips = (c) => Object.entries(c || {}).filter(([, v]) => v >= 3).sort((a, b) => b[1] - a[1]).map(([k]) => `<span class="pill company ${k}">${k[0].toUpperCase() + k.slice(1)}</span>`).join('');
+
+  // ---------- dashboard ----------
+  route(/^\/$/, async () => {
+    const [{ stats, reviews }, { problems }] = await Promise.all([api.get('/api/stats'), api.get('/api/problems')]);
+    const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
+    const d = stats.by_difficulty;
+    const days = new Set(stats.active_days);
+    let heat = '';
+    for (let k = 89; k >= 0; k--) { const dt = new Date(); dt.setDate(dt.getDate() - k); const key = dt.toISOString().slice(0, 10); heat += `<i class="${days.has(key) ? 'on' : ''}" title="${key}"></i>`; }
+    const next = problems.filter(p => p.status !== 'solved').slice(0, 5);
+    app.innerHTML = `<div class="page">
+      <h1>Dashboard</h1>
+      <p class="lead">A practice platform modelled on the public LeetCode problem page: ${problems.length} problems written from scratch, a judge that runs your Python against hidden tests${STATIC ? ' right in this browser' : ''}, spaced-repetition reviews, an 8-week plan, and Google and Apple tracks.${STATIC ? ' Progress is saved in this browser only.' : ''}</p>
+      <div class="grid cols-3">
+        <div class="card"><div class="muted small">Solved</div><div class="stat">${stats.solved}<small>/ ${stats.total}</small></div>
+          <div class="bar"><i style="width:${pct(stats.solved, stats.total)}%"></i></div>
+          <div class="small muted" style="margin-top:8px">Easy ${d.Easy[0]}/${d.Easy[1]} · Medium ${d.Medium[0]}/${d.Medium[1]} · Hard ${d.Hard[0]}/${d.Hard[1]}</div>
+          <div class="bar easy"><i style="width:${pct(d.Easy[0], d.Easy[1])}%"></i></div>
+          <div class="bar medium"><i style="width:${pct(d.Medium[0], d.Medium[1])}%"></i></div>
+          <div class="bar hard"><i style="width:${pct(d.Hard[0], d.Hard[1])}%"></i></div></div>
+        <div class="card"><div class="muted small">Streak</div><div class="stat">${stats.streak}<small>days</small></div><div class="small muted" style="margin:8px 0">Last 90 days</div><div class="heat">${heat}</div></div>
+        <div class="card"><div class="muted small">Reviews due</div><div class="stat">${reviews.length}</div>
+          ${reviews.length ? '<ul class="plain small" style="margin:8px 0 0">' + reviews.slice(0, 6).map(r => `<li><a href="#/problem/${r.id}">${esc(r.title)}</a> <span class="muted">${r.due}</span></li>`).join('') + '</ul>' : '<div class="small muted" style="margin-top:8px">Nothing due. Solved problems come back after 1, 3, 7, 14, 30 and 60 days.</div>'}
+        </div>
+      </div>
+      <div class="grid cols-2" style="margin-top:14px">
+        <div class="card"><h2 style="margin-top:0">Up next</h2>
+          <ul class="plain" style="padding-left:0;list-style:none">${next.map(p => `<li class="row" style="padding:4px 0">${statusIcon(p.status)} <a href="#/problem/${p.id}">${p.number}. ${esc(p.title)}</a> ${diffPill(p.difficulty)}</li>`).join('')}</ul>
+          <div class="row" style="margin-top:10px"><a class="btn accent" href="#/plan">Open the 8-week plan</a><button class="btn" id="rand">Random unsolved</button></div></div>
+        <div class="card"><h2 style="margin-top:0">Progress by pattern</h2>
+          <div class="mix">${Object.entries(stats.by_pattern).map(([k, [a, b]]) => `<span>${esc(k)}</span><div class="bar" style="margin:0"><i style="width:${pct(a, b)}%"></i></div><span class="small muted">${a}/${b}</span>`).join('')}</div></div>
+      </div>
+      <h2>How to use this well</h2>
+      <div class="card"><ol class="steps">
+        <li><b>Follow the plan.</b> Six days a week, one pattern block per week, 3-5 problems a day. Open hints after 25 minutes, the editorial after 40.</li>
+        <li><b>Read every editorial</b>, including for problems you solved. The follow-ups at the end are what separates a pass from a strong hire.</li>
+        <li><b>Do the reviews.</b> When a solved problem comes back, write it from memory and rate it. The schedule stretches as you get reliable.</li>
+        <li><b>Mock weekly from week 4.</b> Two problems, 45 minutes, talk out loud, no hints. Use the Google or Apple mock depending on your target.</li>
+        <li><b>Keep notes.</b> The Notes tab on each problem is for the one-line insight you would want to remember in the interview.</li>
+      </ol></div>
+    </div>`;
+    document.getElementById('rand').onclick = async () => { const r = await api.get('/api/random'); go('/problem/' + r.id); };
+  });
+
+  // ---------- problem list ----------
+  route(/^\/problems$/, async () => {
+    const { problems, patterns } = await api.get('/api/problems');
+    const f = store.get('filters', { q: '', diff: '', pattern: '', company: '', status: '' });
+    app.innerHTML = `<div class="page">
+      <h1>Problems</h1>
+      <div class="filters">
+        <input id="f-q" placeholder="Search title or tag" value="${esc(f.q)}">
+        <select id="f-diff"><option value="">Difficulty</option>${['Easy', 'Medium', 'Hard'].map(d => `<option ${f.diff === d ? 'selected' : ''}>${d}</option>`).join('')}</select>
+        <select id="f-pattern"><option value="">Pattern</option>${patterns.map(p => `<option ${f.pattern === p ? 'selected' : ''}>${esc(p)}</option>`).join('')}</select>
+        <select id="f-company"><option value="">Company</option>${['google', 'apple', 'meta', 'amazon', 'microsoft'].map(c => `<option value="${c}" ${f.company === c ? 'selected' : ''}>${c[0].toUpperCase() + c.slice(1)}</option>`).join('')}</select>
+        <select id="f-status"><option value="">Status</option><option value="todo" ${f.status === 'todo' ? 'selected' : ''}>Todo</option><option value="attempted" ${f.status === 'attempted' ? 'selected' : ''}>Attempted</option><option value="solved" ${f.status === 'solved' ? 'selected' : ''}>Solved</option><option value="starred" ${f.status === 'starred' ? 'selected' : ''}>Starred</option></select>
+        <button class="btn" id="f-clear">Clear</button><span class="muted small" id="count"></span>
+      </div>
+      <table class="plist"><thead><tr><th></th><th>#</th><th>Title</th><th>Difficulty</th><th>Pattern</th><th>Companies</th><th></th></tr></thead><tbody id="rows"></tbody></table>
+    </div>`;
+    const ids = ['q', 'diff', 'pattern', 'company', 'status'];
+    const read = () => ({ q: $('#f-q').value.trim().toLowerCase(), diff: $('#f-diff').value, pattern: $('#f-pattern').value, company: $('#f-company').value, status: $('#f-status').value });
+    function draw() {
+      const f = read(); store.set('filters', f);
+      const rows = problems.filter(p =>
+        (!f.q || p.title.toLowerCase().includes(f.q) || p.tags.some(t => t.toLowerCase().includes(f.q)) || p.pattern.toLowerCase().includes(f.q)) &&
+        (!f.diff || p.difficulty === f.diff) && (!f.pattern || p.pattern === f.pattern) &&
+        (!f.company || (p.companies[f.company] || 0) >= 3) &&
+        (!f.status || (f.status === 'todo' ? !p.status : f.status === 'starred' ? p.starred : p.status === f.status)));
+      $('#count').textContent = `${rows.length} problems`;
+      $('#rows').innerHTML = rows.map(p => `<tr>
+        <td class="status">${statusIcon(p.status)}</td><td class="muted">${p.number}</td>
+        <td><a href="#/problem/${p.id}">${esc(p.title)}</a></td><td>${diffPill(p.difficulty)}</td>
+        <td class="small">${esc(p.pattern)}</td><td><div class="chips">${companyChips(p.companies)}</div></td>
+        <td><span class="star ${p.starred ? 'on' : ''}" data-id="${p.id}" title="Star">★</span></td></tr>`).join('');
+      $('#rows').querySelectorAll('.star').forEach(s => s.onclick = async () => { const r = await api.post('/api/star', { id: s.dataset.id }); s.classList.toggle('on', r.starred); problems.find(p => p.id === s.dataset.id).starred = r.starred; });
+    }
+    ids.forEach(i => $('#f-' + i).addEventListener('input', draw));
+    $('#f-clear').onclick = () => { ids.forEach(i => $('#f-' + i).value = ''); draw(); };
+    draw();
+  });
+
+  // ---------- problem workspace ----------
+  route(/^\/problem\/([\w-]+)$/, async (id) => {
+    const p = await api.get('/api/problem/' + id);
+    if (p.error) { app.innerHTML = '<div class="page">Problem not found.</div>'; return; }
+    document.title = `${p.number}. ${p.title} - KaizenPrep`;
+    const mock = store.get('mock', null);
+    app.innerHTML = `<div class="workspace">
+      <section class="pane">
+        <div class="pane-tabs" id="left-tabs">
+          <button data-tab="desc" class="active">Description</button><button data-tab="edit">Editorial</button><button data-tab="subs">Submissions</button><button data-tab="notes">Notes</button>
+          <span class="spacer"></span>
+          <a class="btn sm" href="#/problems" title="Problem list">☰</a>
+          ${p.prev ? `<a class="btn sm" href="#/problem/${p.prev.id}" title="${esc(p.prev.title)}">‹</a>` : ''}
+          ${p.next ? `<a class="btn sm" href="#/problem/${p.next.id}" title="${esc(p.next.title)}">›</a>` : ''}
+          <button class="btn sm" id="rand" title="Random unsolved">⤭</button>
+        </div>
+        <div class="pane-body" id="left-body"></div>
+      </section>
+      <section class="pane">
+        <div class="editor-toolbar">
+          <span>Python 3</span><span class="muted">·</span><span id="saved" class="muted">Draft</span>
+          <span class="spacer"></span>
+          <span class="stopwatch" id="sw">00:00</span><button class="btn sm" id="sw-btn">Start</button>
+          <button class="btn sm" id="reset" title="Reset to starter code">↺</button>
+          <button class="btn sm" id="run">▶ Run</button><button class="btn sm primary" id="submit">Submit</button>
+        </div>
+        <div class="editor-wrap" id="editor-wrap"></div>
+        <div class="console">
+          <div class="pane-tabs"><button data-ctab="cases" class="active">Testcase</button><button data-ctab="result">Test result</button><span class="spacer"></span><span class="small muted"><kbd>⌘/Ctrl</kbd>+<kbd>Enter</kbd> run · <kbd>⇧</kbd>+<kbd>Enter</kbd> submit</span></div>
+          <div class="pane-body" id="console-body"></div>
+        </div>
+      </section>
+    </div>`;
+
+    // ---- left pane tabs ----
+    const left = $('#left-body');
+    const tabs = {
+      desc: () => `<h2 class="ptitle">${p.number}. ${esc(p.title)}</h2>
+        <div class="row" style="margin-bottom:12px;flex-wrap:wrap">${diffPill(p.difficulty)}<span class="pill">${esc(p.pattern)}</span>${companyChips(p.companies)}<span class="star ${p.starred ? 'on' : ''}" id="star" title="Star">★</span>${p.status === 'solved' ? '<span class="pill easy">Solved · review ' + esc(p.next_review) + '</span>' : ''}</div>
+        <div class="desc md">${md(p.description)}</div>
+        ${p.examples.map((e, i) => `<div class="sec-title">Example ${i + 1}</div><div class="example"><div><b>Input:</b> <code>${esc(e.input)}</code></div><div><b>Output:</b> <code>${esc(e.output)}</code></div>${e.explanation ? `<div><b>Explanation:</b> ${esc(e.explanation)}</div>` : ''}</div>`).join('')}
+        <div class="sec-title">Constraints</div><ul class="plain">${p.constraints.map(c => `<li><code>${esc(c)}</code></li>`).join('')}</ul>
+        <div class="sec-title">Hints</div>${p.hints.map((h, i) => `<details class="hint"><summary>Hint ${i + 1}</summary><p>${esc(h)}</p></details>`).join('')}
+        <div class="sec-title">Topics</div><div class="chips">${p.tags.map(t => `<span class="pill">${esc(t)}</span>`).join('')}</div>
+        ${p.similar.length ? `<div class="sec-title">Similar questions</div><ul class="similar">${p.similar.map(s => `<li><a href="#/problem/${s.id}">${esc(s.title)}</a> ${diffPill(s.difficulty)}</li>`).join('')}</ul>` : ''}
+        <div class="sec-title">Company frequency</div><div class="small muted">${Object.entries(p.companies).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k[0].toUpperCase() + k.slice(1)} ${'●'.repeat(v)}${'○'.repeat(5 - v)}`).join(' &nbsp; ')}<br>Scores are an estimate from public interview reports, not an official tag.</div>`,
+      edit: () => `<h2 class="ptitle">Editorial</h2><div class="md">${md(p.approach)}</div>
+        <div class="sec-title">Complexity</div><p>Time <code>${esc(p.complexity.time)}</code> · Space <code>${esc(p.complexity.space)}</code></p>
+        ${p.followups.length ? `<div class="sec-title">Follow-ups</div><ul class="plain">${p.followups.map(f => `<li>${esc(f)}</li>`).join('')}</ul>` : ''}
+        <div class="sec-title">Reference solution</div><pre><code>${esc(p.solution)}</code></pre><button class="btn sm" id="load-sol">Load into editor</button>`,
+      subs: () => `<h2 class="ptitle">Submissions</h2>${p.submissions.length ? p.submissions.map((s, i) => `<div class="sub-row" data-i="${i}"><span class="${s.status === 'Accepted' ? 'ok' : 'bad'}">${esc(s.status)}</span><span class="muted small">${s.passed}/${s.total} tests · ${s.ms} ms · ${esc(s.at.replace('T', ' '))}</span><span class="muted small">click to load</span></div>`).join('') : '<p class="muted">No submissions yet.</p>'}`,
+      notes: () => `<h2 class="ptitle">Notes</h2><p class="muted small">One line about the key idea you want to remember. Saved automatically.</p><textarea class="note" id="note">${esc(p.note)}</textarea>`,
+    };
+    function showTab(name) {
+      $('#left-tabs').querySelectorAll('button[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+      left.innerHTML = tabs[name]();
+      if (name === 'desc') $('#star').onclick = async () => { const r = await api.post('/api/star', { id }); p.starred = r.starred; $('#star').classList.toggle('on', r.starred); };
+      if (name === 'edit') $('#load-sol').onclick = () => setCode(p.solution);
+      if (name === 'subs') left.querySelectorAll('.sub-row').forEach(r => r.onclick = () => setCode(p.submissions[+r.dataset.i].code));
+      if (name === 'notes') { let t; $('#note').oninput = (e) => { clearTimeout(t); t = setTimeout(() => api.post('/api/note', { id, note: e.target.value }), 500); }; }
+    }
+    $('#left-tabs').querySelectorAll('button[data-tab]').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+    showTab('desc');
+    $('#rand').onclick = async () => { const r = await api.get('/api/random'); go('/problem/' + r.id); };
+
+    // ---- editor ----
+    const wrap = $('#editor-wrap');
+    let cm = null, ta = null;
+    const initial = p.draft || p.starter;
+    if (window.CodeMirror) {
+      cm = CodeMirror(wrap, { value: initial, mode: 'python', lineNumbers: true, indentUnit: 4, tabSize: 4, matchBrackets: true, autoCloseBrackets: true,
+        theme: document.documentElement.dataset.theme === 'dark' ? 'material-darker' : 'default', extraKeys: { Tab: (c) => c.execCommand('indentMore'), 'Shift-Tab': (c) => c.execCommand('indentLess') } });
+      window._cm = cm;
+    } else {
+      ta = document.createElement('textarea'); ta.className = 'plain-editor'; ta.value = initial; wrap.appendChild(ta);
+    }
+    const getCode = () => cm ? cm.getValue() : ta.value;
+    const setCode = (v) => { cm ? cm.setValue(v) : (ta.value = v); };
+    let saveT; const onChange = () => { $('#saved').textContent = 'Unsaved'; clearTimeout(saveT); saveT = setTimeout(async () => { await api.post('/api/draft', { id, code: getCode() }); $('#saved').textContent = 'Saved'; }, 800); };
+    cm ? cm.on('change', onChange) : ta.addEventListener('input', onChange);
+    let resetArmed = null;
+    $('#reset').onclick = () => {
+      if (resetArmed) { clearTimeout(resetArmed); resetArmed = null; $('#reset').textContent = '↺'; setCode(p.starter); return; }
+      $('#reset').textContent = 'Reset? click again'; resetArmed = setTimeout(() => { resetArmed = null; $('#reset').textContent = '↺'; }, 3000);
+    };
+
+    // ---- stopwatch ----
+    let swStart = null, swElapsed = 0;
+    const fmt = (ms) => { const s = Math.floor(ms / 1000); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+    $('#sw-btn').onclick = () => {
+      if (swStart) { swElapsed += Date.now() - swStart; swStart = null; $('#sw-btn').textContent = 'Start'; clearInterval(window._stopwatch); }
+      else { swStart = Date.now(); $('#sw-btn').textContent = 'Pause'; window._stopwatch = setInterval(() => $('#sw').textContent = fmt(swElapsed + Date.now() - swStart), 500); }
+    };
+
+    // ---- console ----
+    const cbody = $('#console-body');
+    let activeCase = 0, lastResult = null, customInput = store.get('custom:' + id, '');
+    const caseInput = (c) => Object.entries(c.input).map(([k, v]) => `<div class="kv"><label>${esc(k)} =</label><pre>${esc(JSON.stringify(v))}</pre></div>`).join('');
+    function showConsole(name) {
+      cbody.parentElement.querySelectorAll('button[data-ctab]').forEach(b => b.classList.toggle('active', b.dataset.ctab === name));
+      if (name === 'cases') {
+        const cases = p.visible_tests;
+        cbody.innerHTML = `<div class="case-tabs">${cases.map((_, i) => `<button data-case="${i}" class="${activeCase === i ? 'active' : ''}">Case ${i + 1}</button>`).join('')}<button data-case="custom" class="${activeCase === 'custom' ? 'active' : ''}">+ Custom</button></div><div id="case-body"></div>`;
+        const body = $('#case-body');
+        if (activeCase === 'custom') {
+          body.innerHTML = `<div class="kv"><label>Input as JSON object keyed by parameter name${p.kind === 'design' ? ' ({"ops": [[...], ...]})' : ''}</label><textarea id="custom-in">${esc(customInput || JSON.stringify(cases[0].input))}</textarea></div><div class="small muted">Custom inputs run with Run and show the output only (no expected value).</div>`;
+          $('#custom-in').oninput = (e) => { customInput = e.target.value; store.set('custom:' + id, customInput); };
+        } else body.innerHTML = caseInput(cases[activeCase]) + `<div class="small muted">Expected: <code>${esc(JSON.stringify(cases[activeCase].output))}</code> · ${p.hidden_count} more hidden tests run on Submit.</div>`;
+        cbody.querySelectorAll('button[data-case]').forEach(b => b.onclick = () => { activeCase = b.dataset.case === 'custom' ? 'custom' : +b.dataset.case; showConsole('cases'); });
+      } else {
+        if (!lastResult) { cbody.innerHTML = '<p class="muted">Run or submit your code to see results here.</p>'; return; }
+        const r = lastResult;
+        const ok = r.status === 'Accepted';
+        let html = `<div class="verdict ${ok ? 'ok' : 'bad'}">${esc(r.status)}<small>${r.passed}/${r.total} passed · ${r.ms} ms${r.submitted ? ' · submitted' : ''}</small></div>`;
+        if (r.stderr && r.status !== 'Wrong Answer') html += `<pre class="kv">${esc(r.stderr)}</pre>`;
+        if (r.cases.length) {
+          html += `<div class="case-tabs">${r.cases.map((c, i) => `<button data-rcase="${i}" class="${c.ok ? 'pass' : 'fail'} ${i === (r._active || 0) ? 'active' : ''}">${c.custom ? 'Custom' : 'Case ' + (i + 1)}</button>`).join('')}</div>`;
+          const c = r.cases[r._active || 0];
+          html += caseInput(c);
+          if (c.error) html += `<div class="kv"><label>Error</label><pre>${esc(c.error)}\n${esc(c.trace || '')}</pre></div>`;
+          else html += `<div class="kv"><label>Output</label><pre>${esc(JSON.stringify(c.output))}</pre></div>` + (c.custom ? '' : `<div class="kv"><label>Expected</label><pre>${esc(JSON.stringify(c.expected))}</pre></div>`);
+        }
+        if (r.stdout) html += `<div class="kv"><label>stdout</label><pre>${esc(r.stdout)}</pre></div>`;
+        if (r.submitted && ok) html += `<div class="rate"><span class="small muted">Review in ${esc(r.entry.next_review)}. How did it feel?</span><button class="btn sm" data-rate="again">Again</button><button class="btn sm" data-rate="hard">Hard</button><button class="btn sm" data-rate="easy">Easy</button></div>`;
+        cbody.innerHTML = html;
+        cbody.querySelectorAll('button[data-rcase]').forEach(b => b.onclick = () => { r._active = +b.dataset.rcase; showConsole('result'); });
+        cbody.querySelectorAll('button[data-rate]').forEach(b => b.onclick = async () => { const e = await api.post('/api/rate', { id, rating: b.dataset.rate }); r.entry.next_review = e.next_review; cbody.querySelector('.rate').innerHTML = `<span class="small muted">Next review ${esc(e.next_review)}.</span>`; });
+      }
+    }
+    cbody.parentElement.querySelectorAll('button[data-ctab]').forEach(b => b.onclick = () => showConsole(b.dataset.ctab));
+    showConsole('cases');
+
+    async function run(submit) {
+      const btn = submit ? $('#submit') : $('#run');
+      $('#run').disabled = $('#submit').disabled = true; btn.textContent = submit ? 'Judging…' : (STATIC && !window.__pyReady ? 'Loading Python…' : 'Running…');
+      try {
+        const body = { id, code: getCode() };
+        if (!submit && activeCase === 'custom' && customInput.trim()) {
+          try { body.custom = [JSON.parse(customInput)]; } catch { lastResult = { status: 'Invalid custom input', passed: 0, total: 0, ms: 0, cases: [], stderr: 'Custom input must be a JSON object keyed by parameter name.' }; showConsole('result'); return; }
+        }
+        const r = await api.post(submit ? '/api/submit' : '/api/run', body);
+        window.__pyReady = true;
+        r.submitted = submit; r._active = Math.max(0, r.cases.findIndex(c => !c.ok));
+        lastResult = r; showConsole('result');
+        if (submit && r.status === 'Accepted') { p.status = 'solved'; p.next_review = r.entry.next_review; }
+        if (submit) { p.submissions = (await api.get('/api/problem/' + id)).submissions; }
+      } finally { $('#run').disabled = $('#submit').disabled = false; $('#run').textContent = '▶ Run'; $('#submit').textContent = 'Submit'; }
+    }
+    if (STATIC && api.warm) api.warm();
+    $('#run').onclick = () => run(false);
+    $('#submit').onclick = () => run(true);
+    const keys = (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); run(e.shiftKey); } };
+    wrap.addEventListener('keydown', keys);
+  });
+
+  // ---------- study plan ----------
+  route(/^\/plan$/, async () => {
+    const plan = await api.get('/api/plan');
+    const open = store.get('plan-open', 1);
+    app.innerHTML = `<div class="page">
+      <h1>8-week study plan</h1>
+      <p class="lead">One pattern block per week, six study days, problems ordered easy to hard within the block. Week 8 is design, strings, review and mocks. Adjust the pace: if you have 4 weeks, do two weeks per week and skip the Hard problems on the first pass.</p>
+      <div class="card"><div class="sec-title" style="margin-top:0">Daily routine</div><ol class="steps">${plan.daily_routine.map(s => `<li>${esc(s)}</li>`).join('')}</ol></div>
+      <h2>Weeks</h2>
+      ${plan.weeks.map(w => `<details class="week" ${w.week === open ? 'open' : ''} data-week="${w.week}"><summary>Week ${w.week}: ${esc(w.title)}<span class="pill ${w.done === w.total ? 'easy' : ''}">${w.done}/${w.total}</span></summary>
+        <div class="small muted" style="margin:6px 0 4px">${w.patterns.map(esc).join(' · ')}</div>
+        ${w.days.map((d, i) => `<div class="day"><h4>Day ${i + 1}</h4><ul>${d.map(p => `<li>${statusIcon(p.status)} <a href="#/problem/${p.id}">${p.number}. ${esc(p.title)}</a> ${diffPill(p.difficulty)}</li>`).join('') || '<li class="muted">Rest or review day</li>'}</ul></div>`).join('')}
+        ${w.extras.length ? `<div class="day"><h4>Also this week</h4><ul>${w.extras.map(e => `<li>• ${esc(e)}</li>`).join('')}</ul></div>` : ''}
+      </details>`).join('')}
+    </div>`;
+    app.querySelectorAll('details.week').forEach(d => d.addEventListener('toggle', () => { if (d.open) store.set('plan-open', +d.dataset.week); }));
+  });
+
+  // ---------- pattern cheat sheet ----------
+  route(/^\/patterns$/, async () => {
+    const { patterns } = await api.get('/api/patterns');
+    const { problems } = await api.get('/api/problems');
+    app.innerHTML = `<div class="page">
+      <h1>Pattern cheat sheet</h1>
+      <p class="lead">The 19 techniques behind every problem in the bank: when to recognise each one, a template you should be able to write from memory, and the traps interviewers watch for. Revisit this the night before an interview.</p>
+      ${patterns.map(pt => { const ps = problems.filter(p => p.pattern === pt.name); const solved = ps.filter(p => p.status === 'solved').length; return `<details class="week"><summary>${esc(pt.name)}<span class="pill ${solved === ps.length && ps.length ? 'easy' : ''}">${solved}/${ps.length}</span></summary>
+        <div class="sec-title">When to use it</div><p>${esc(pt.signal)}</p>
+        <div class="sec-title">Template</div><pre><code>${esc(pt.template)}</code></pre>
+        <div class="sec-title">Pitfalls</div><ul class="plain">${pt.pitfalls.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+        <div class="sec-title">Problems</div><div class="chips">${ps.map(p => `<a class="pill ${p.status === 'solved' ? 'easy' : ''}" href="#/problem/${p.id}">${esc(p.title)}</a>`).join('')}</div>
+      </details>`; }).join('')}
+    </div>`;
+  });
+
+  // ---------- company tracks ----------
+  route(/^\/track\/(google|apple)$/, async (company) => {
+    const t = await api.get('/api/track/' + company);
+    const li = (p) => `<li>${statusIcon(p.status)}<span class="score">${'●'.repeat(p.score)}</span><a href="#/problem/${p.id}">${p.number}. ${esc(p.title)}</a>${diffPill(p.difficulty)}<span class="small muted">${esc(p.pattern)}</span></li>`;
+    app.innerHTML = `<div class="page">
+      <h1>${esc(t.name)} track</h1>
+      <p class="lead">${esc(t.summary)}</p>
+      <div class="notice">Frequency scores are an estimate built from public interview reports and prep communities, not an official company tag. Use the ordering as a prior; the patterns matter more than the exact problems.</div>
+      <div class="grid cols-2">
+        <div class="card"><h2 style="margin-top:0">Interview process</h2><ul class="plain">${t.process.map(s => `<li>${esc(s)}</li>`).join('')}</ul></div>
+        <div class="card"><h2 style="margin-top:0">What they emphasise</h2><ul class="plain">${t.focus.map(s => `<li>${esc(s)}</li>`).join('')}</ul></div>
+      </div>
+      <div class="grid cols-2" style="margin-top:14px">
+        <div class="card"><h2 style="margin-top:0">Tips from the loop</h2><ul class="plain">${t.tips.map(s => `<li>${esc(s)}</li>`).join('')}</ul></div>
+        <div class="card"><h2 style="margin-top:0">Pattern mix at ${esc(t.name)}</h2><div class="mix">${t.pattern_mix.map(m => `<span>${esc(m.pattern)}</span><div class="bar" style="margin:0"><i style="width:${Math.min(100, m.share * 2)}%"></i></div><span class="small muted">${m.share}%</span>`).join('')}</div></div>
+      </div>
+      <div class="row" style="margin:18px 0 6px"><h2 style="margin:0">Must do (${t.must_do.length})</h2><a class="btn sm" href="#/mock?company=${company}">Start a ${esc(t.name)} mock</a></div>
+      <div class="card"><ul class="track-list">${t.must_do.map(li).join('')}</ul></div>
+      <h2>Also frequently reported (${t.also.length})</h2>
+      <div class="card"><ul class="track-list">${t.also.map(li).join('')}</ul></div>
+    </div>`;
+  });
+
+  // ---------- mock interview ----------
+  route(/^\/mock(?:\?company=(\w+))?$/, async (company) => {
+    const mock = store.get('mock', null);
+    const sel = company || (mock && mock.company) || 'google';
+    app.innerHTML = `<div class="page">
+      <h1>Mock interview</h1>
+      <p class="lead">Two problems, 45 minutes, like a real loop round. Talk out loud, state the brute force, ask clarifying questions to yourself, and only run the code when you believe it is correct. No hints, no editorial until the timer ends.</p>
+      <div class="card">
+        <div class="row"><label>Style</label><select id="mock-company" class="btn"><option value="google" ${sel === 'google' ? 'selected' : ''}>Google (graphs, DP, follow-ups)</option><option value="apple" ${sel === 'apple' ? 'selected' : ''}>Apple (arrays, strings, lists, design)</option></select>
+        <button class="btn primary" id="mock-start">Start new mock</button>${mock ? '<button class="btn" id="mock-end">End current mock</button>' : ''}</div>
+        <div id="mock-body" style="margin-top:14px">${mock ? renderMock(mock) : '<p class="muted">No mock in progress.</p>'}</div>
+      </div>
+      <h2>Scoring yourself afterwards</h2>
+      <div class="card"><ul class="plain">
+        <li><b>Problem navigation:</b> Did you restate the problem and ask about constraints before coding?</li>
+        <li><b>Algorithm:</b> Did you reach the optimal complexity, and say it out loud?</li>
+        <li><b>Coding:</b> Would the code compile on the first try? Variable names clear? Edge cases handled?</li>
+        <li><b>Verification:</b> Did you trace an example by hand before running?</li>
+        <li><b>Communication:</b> Could an interviewer follow you without reading the code?</li>
+      </ul></div>
+    </div>`;
+    function renderMock(m) {
+      return `<div class="small muted">Started ${esc(new Date(m.started).toLocaleString())} · ${m.company} style</div><ul class="track-list">${m.problems.map(p => `<li><a href="#/problem/${p.id}">${p.number}. ${esc(p.title)}</a>${diffPill(p.difficulty)}<span class="small muted">${esc(p.pattern)}</span></li>`).join('')}</ul>`;
+    }
+    $('#mock-start').onclick = async () => {
+      const c = $('#mock-company').value;
+      const r = await api.get('/api/mock?company=' + c);
+      const m = { company: c, problems: r.problems, started: Date.now(), minutes: r.minutes };
+      store.set('mock', m); tickMock(); go('/problem/' + m.problems[0].id);
+    };
+    const end = $('#mock-end'); if (end) end.onclick = () => { store.set('mock', null); tickMock(); render(); };
+  });
+
+  function tickMock() {
+    const el = document.getElementById('mock-timer');
+    const m = store.get('mock', null);
+    if (!m) { el.classList.add('hidden'); return; }
+    const left = m.minutes * 60 * 1000 - (Date.now() - m.started);
+    const s = Math.floor(Math.abs(left) / 1000);
+    el.textContent = `${left < 0 ? '-' : ''}${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')} mock`;
+    el.classList.toggle('late', left < 0); el.classList.remove('hidden');
+    el.onclick = () => go('/mock');
+  }
+  setInterval(tickMock, 1000); tickMock();
+
+  function $(sel) { return app.querySelector(sel); }
+  render();
+})();
+
+</script>
+
+</body></html>
