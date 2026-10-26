@@ -1,7 +1,7 @@
 """Export the bank, patterns and track data as JSON for the static (in-browser) build."""
 import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import bank, patterns, tracks, judge
+import bank, patterns, tracks, judge, apple_mle
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static-build", "data")
 os.makedirs(OUT, exist_ok=True)
@@ -16,6 +16,7 @@ for p in problems:
     index.append({k: p.get(k, []) for k in SUMMARY})
     json.dump(p, open(os.path.join(OUT, "problems", p["id"] + ".json"), "w"), separators=(",", ":"))
 json.dump({"problems": index, "patterns": bank.PATTERN_ORDER}, open(os.path.join(OUT, "index.json"), "w"), separators=(",", ":"))
+json.dump(apple_mle.APPLE_MLE, open(os.path.join(OUT, "apple-mle.json"), "w"), separators=(",", ":"))
 json.dump({"patterns": patterns.PATTERNS}, open(os.path.join(OUT, "patterns.json"), "w"), separators=(",", ":"))
 json.dump({"guides": tracks.COMPANY_GUIDES, "weeks": tracks.WEEKS, "intervals": [1, 3, 7, 14, 30, 60]},
           open(os.path.join(OUT, "tracks.json"), "w"), separators=(",", ":"))

@@ -3,13 +3,13 @@
 (function () {
   const TIMEOUT_MS = 12000;
   const PKEY = 'prepcode:progress';
-  let index = null, tracksData = null, patternsData = null;
+  let index = null, tracksData = null, patternsData = null, mleData = null;
   const problemCache = {};
 
   const fetchJson = (u) => fetch(u).then(r => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); });
   async function loadIndex() {
     if (!index) {
-      [index, tracksData, patternsData] = await Promise.all([fetchJson('data/index.json'), fetchJson('data/tracks.json'), fetchJson('data/patterns.json')]);
+      [index, tracksData, patternsData, mleData] = await Promise.all([fetchJson('data/index.json'), fetchJson('data/tracks.json'), fetchJson('data/patterns.json'), fetchJson('data/apple-mle.json')]);
     }
     return index;
   }
@@ -118,7 +118,15 @@
   function compare(expected, actual, mode, tol) {
     tol = tol || 1e-5;
     if (mode === 'any_of') return expected.some(e => compare(e, actual, 'exact', tol));
-    if (mode === 'float') { try { if (Array.isArray(expected)) return expected.length === actual.length && expected.every((a, i) => Math.abs(+a - +actual[i]) <= tol); return Math.abs(+expected - +actual) <= tol; } catch { return false; } }
+    if (mode === 'float') {
+      const close = (a, b) => {
+        if (Array.isArray(a) || Array.isArray(b)) return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((x, i) => close(x, b[i]));
+        if (a && typeof a === 'object' || b && typeof b === 'object') { if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false; const ka = Object.keys(a).sort(), kb = Object.keys(b).sort(); return ka.join() === kb.join() && ka.every(k => close(a[k], b[k])); }
+        if (typeof a === 'boolean' || typeof a === 'string' || a === null || typeof b === 'boolean' || typeof b === 'string' || b === null) return a === b;
+        const x = +a, y = +b; return Number.isFinite(x) && Number.isFinite(y) && Math.abs(x - y) <= tol;
+      };
+      return close(expected, actual);
+    }
     if (mode === 'unordered' || mode === 'unordered_nested') { const a = norm(expected, mode), b = norm(actual, mode); return a.length === b.length && a.every((x, i) => x === b[i]); }
     return JSON.stringify(expected) === JSON.stringify(actual);
   }
@@ -161,7 +169,13 @@
       if (path.startsWith('/api/track/')) return companyTrack(idx.problems, path.split('/')[3]);
       if (path === '/api/plan') return studyPlan(idx.problems);
       if (path === '/api/patterns') return patternsData;
-      if (path === '/api/mock') { const company = (qs || '').replace('company=', '') || 'google'; const t = companyTrack(idx.problems, company); const pool = [...t.must_do, ...t.also].filter(p => p.difficulty !== 'Easy'); const pick = []; const src = pool.length ? [...pool] : [...t.all_by_frequency]; while (pick.length < 2 && src.length) pick.push(src.splice(Math.floor(Math.random() * src.length), 1)[0]); return { company, problems: pick, minutes: 45 }; }
+      if (path === '/api/apple-mle') {
+        const byId = Object.fromEntries(idx.problems.map(p => [p.id, p]));
+        const plan = mleData.plan.map(w => ({ ...w, problems: w.problems.filter(i => byId[i]).map(i => ({ id: i, title: byId[i].title, difficulty: byId[i].difficulty, pattern: byId[i].pattern, status: (prog[i] || {}).status })) }));
+        return { ...mleData, plan, coding: idx.problems.filter(p => p.pattern === 'ML Coding').map(p => summary(p, prog)) };
+      }
+      if (path === '/api/mock') { const company = (qs || '').replace('company=', '') || 'google';
+        if (company === 'apple-mle') { const src = idx.problems.filter(p => p.pattern === 'ML Coding').map(p => ({ id: p.id, number: p.number, title: p.title, difficulty: p.difficulty, pattern: p.pattern })); const pick = []; while (pick.length < 2 && src.length) pick.push(src.splice(Math.floor(Math.random() * src.length), 1)[0]); return { company, problems: pick, minutes: 45 }; } const t = companyTrack(idx.problems, company); const pool = [...t.must_do, ...t.also].filter(p => p.difficulty !== 'Easy'); const pick = []; const src = pool.length ? [...pool] : [...t.all_by_frequency]; while (pick.length < 2 && src.length) pick.push(src.splice(Math.floor(Math.random() * src.length), 1)[0]); return { company, problems: pick, minutes: 45 }; }
       return { error: 'unknown endpoint' };
     },
     async post(url, body) {

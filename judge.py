@@ -288,12 +288,18 @@ def compare(expected, actual, mode="exact", tolerance=1e-5):
     if mode == "any_of":
         return any(compare(e, actual, "exact", tolerance) for e in expected)
     if mode == "float":
-        try:
-            if isinstance(expected, list):
-                return len(expected) == len(actual) and all(abs(float(a) - float(b)) <= tolerance for a, b in zip(expected, actual))
-            return abs(float(expected) - float(actual)) <= tolerance
-        except (TypeError, ValueError):
-            return False
+        def close(a, b):
+            if isinstance(a, list) or isinstance(b, list):
+                return isinstance(a, list) and isinstance(b, list) and len(a) == len(b) and all(close(x, y) for x, y in zip(a, b))
+            if isinstance(a, dict) or isinstance(b, dict):
+                return isinstance(a, dict) and isinstance(b, dict) and a.keys() == b.keys() and all(close(a[k], b[k]) for k in a)
+            if isinstance(a, (bool, str)) or isinstance(b, (bool, str)) or a is None or b is None:
+                return a == b
+            try:
+                return abs(float(a) - float(b)) <= tolerance
+            except (TypeError, ValueError):
+                return False
+        return close(expected, actual)
     if mode in ("unordered", "unordered_nested"):
         return _normalize(expected, mode) == _normalize(actual, mode)
     if isinstance(expected, bool) or isinstance(actual, bool):

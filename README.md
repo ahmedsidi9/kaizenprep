@@ -1,8 +1,9 @@
 # KaizenPrep
 
-An interview practice platform modelled on the public LeetCode problem page: 195 original
-problems, an in-browser Python judge, editorials, spaced repetition, an 8-week plan, and Google
-and Apple tracks.
+An interview practice platform modelled on the public LeetCode problem page: 211 original
+problems, an in-browser Python judge, editorials, spaced repetition, an 8-week plan, Google
+and Apple tracks, and an Apple MLE section (study guide, 53-question bank with model answers,
+ML system design prompts, 16 implement-from-scratch ML coding problems, 4-week plan).
 
 **Live site:** https://ahmedsidi9.github.io/kaizenprep/ (static build, Python runs in your browser via Pyodide)
 

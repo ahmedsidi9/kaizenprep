@@ -84,9 +84,9 @@ table.plist td.status { width: 36px; text-align: center; }
 .chips { display: flex; gap: 4px; flex-wrap: wrap; }
 
 /* problem page */
-.workspace { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 48px); }
+.workspace { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 48px); min-width: 0; }
 @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; height: auto; } .workspace .pane { height: auto; min-height: 50vh; } }
-.pane { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border); background: var(--panel); }
+.pane { display: flex; flex-direction: column; min-height: 0; min-width: 0; border-right: 1px solid var(--border); background: var(--panel); }
 .pane:last-child { border-right: 0; }
 .pane-tabs { display: flex; gap: 2px; padding: 6px 8px 0; border-bottom: 1px solid var(--border); background: var(--bg); flex-shrink: 0; align-items: center; }
 .pane-tabs button { background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); padding: 8px 10px; font-weight: 500; }

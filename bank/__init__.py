@@ -24,6 +24,7 @@ PATTERN_ORDER = [
     "Math & Bit Manipulation",
     "Design",
     "Strings",
+    "ML Coding",
 ]
 
 REQUIRED = {"id", "title", "difficulty", "pattern", "tags", "companies", "description", "examples",

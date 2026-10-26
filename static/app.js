@@ -379,15 +379,65 @@
     </div>`;
   });
 
+  // ---------- Apple MLE track ----------
+  route(/^\/apple-mle$/, async () => {
+    const d = await api.get('/api/apple-mle');
+    const cats = [...new Set(d.questions.map(q => q.category))];
+    const openCat = store.get('mle-cat', cats[0]);
+    const solvedCoding = d.coding.filter(p => p.status === 'solved').length;
+    app.innerHTML = `<div class="page">
+      <h1>Apple MLE interview prep</h1>
+      <p class="lead">${esc(d.intro)}</p>
+      <div class="notice">Based on public interview reports, Apple's published ML research and developer documentation. Apple does not publish its loop and teams differ, so treat the process as the common shape, not a guarantee.</div>
+
+      <h2>Teams and what they ask about</h2>
+      <div class="grid cols-2">${d.areas.map(a => `<div class="card"><b>${esc(a.name)}</b><p class="small muted" style="margin:6px 0 0">${esc(a.focus)}</p></div>`).join('')}</div>
+
+      <h2>The loop</h2>
+      ${d.process.map((s, i) => `<details class="week" ${i === 0 ? 'open' : ''}><summary>${esc(s.stage)}</summary><p>${esc(s.what)}</p><div class="sec-title">How to prepare</div><p>${esc(s.prep)}</p></details>`).join('')}
+
+      <h2>Study guide by topic</h2>
+      <p class="muted small">Each topic says why Apple cares, what to study, and the things you must be able to do without notes.</p>
+      ${d.topics.map(t => `<details class="week"><summary>${esc(t.name)}</summary><p class="muted">${esc(t.why)}</p><div class="sec-title">Study</div><ul class="plain">${t.study.map(x => `<li>${esc(x)}</li>`).join('')}</ul><div class="sec-title">Must be able to</div><ul class="plain">${t.must_know.map(x => `<li><b>${esc(x)}</b></li>`).join('')}</ul></details>`).join('')}
+
+      <h2>ML coding problems <span class="pill ${solvedCoding === d.coding.length && d.coding.length ? 'easy' : ''}">${solvedCoding}/${d.coding.length}</span></h2>
+      <p class="muted small">Implement-from-scratch routines that come up in Apple MLE coding rounds, graded by the judge. Pure Python, no numpy, like a live interview editor.</p>
+      <div class="card"><ul class="track-list">${d.coding.map(p => `<li>${statusIcon(p.status)}<a href="#/problem/${p.id}">${p.number}. ${esc(p.title)}</a>${diffPill(p.difficulty)}<span class="small muted">${p.tags.slice(0, 3).map(esc).join(' · ')}</span></li>`).join('')}</ul>
+      <div class="row" style="margin-top:10px"><a class="btn sm" href="#/mock?company=apple-mle">Start an ML coding mock</a></div></div>
+
+      <h2>Question bank <span class="pill">${d.questions.length}</span></h2>
+      <p class="muted small">Answer out loud before opening the model answer. Aim for under two minutes each.</p>
+      <div class="case-tabs" id="mle-cats">${cats.map(c => `<button data-cat="${esc(c)}" class="${c === openCat ? 'active' : ''}">${esc(c)} <span class="muted">${d.questions.filter(q => q.category === c).length}</span></button>`).join('')}</div>
+      <div id="mle-questions"></div>
+
+      <h2>ML system design prompts</h2>
+      <p class="muted small">Work each one on a whiteboard for 35 minutes before opening the outline.</p>
+      ${d.design.map(x => `<details class="week"><summary>${esc(x.title)}</summary><p><b>Prompt.</b> ${esc(x.prompt)}</p><div class="sec-title">Answer outline</div><ol class="steps">${x.outline.map(o => `<li>${esc(o)}</li>`).join('')}</ol></details>`).join('')}
+
+      <h2>4-week plan</h2>
+      ${d.plan.map(w => { const done = w.problems.filter(p => p.status === 'solved').length; return `<details class="week" ${w.week === 1 ? 'open' : ''}><summary>Week ${w.week}: ${esc(w.title)}<span class="pill ${done === w.problems.length && w.problems.length ? 'easy' : ''}">${done}/${w.problems.length}</span></summary><ul class="plain">${w.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul><div class="sec-title">Problems this week</div><ul class="track-list">${w.problems.map(p => `<li>${statusIcon(p.status)}<a href="#/problem/${p.id}">${esc(p.title)}</a>${diffPill(p.difficulty)}<span class="small muted">${esc(p.pattern)}</span></li>`).join('')}</ul></details>`; }).join('')}
+
+      <h2>Resources</h2>
+      <div class="card"><ul class="plain">${d.resources.map(r => `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a> <span class="muted small">${esc(r.why)}</span></li>`).join('')}</ul></div>
+    </div>`;
+    function drawQuestions(cat) {
+      store.set('mle-cat', cat);
+      $('#mle-cats').querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+      $('#mle-questions').innerHTML = d.questions.filter(q => q.category === cat).map((q, i) => `<details class="hint"><summary>${i + 1}. ${esc(q.q)}</summary><p>${esc(q.a)}</p></details>`).join('');
+    }
+    $('#mle-cats').querySelectorAll('button').forEach(b => b.onclick = () => drawQuestions(b.dataset.cat));
+    drawQuestions(cats.includes(openCat) ? openCat : cats[0]);
+  });
+
   // ---------- mock interview ----------
-  route(/^\/mock(?:\?company=(\w+))?$/, async (company) => {
+  route(/^\/mock(?:\?company=([\w-]+))?$/, async (company) => {
     const mock = store.get('mock', null);
     const sel = company || (mock && mock.company) || 'google';
     app.innerHTML = `<div class="page">
       <h1>Mock interview</h1>
       <p class="lead">Two problems, 45 minutes, like a real loop round. Talk out loud, state the brute force, ask clarifying questions to yourself, and only run the code when you believe it is correct. No hints, no editorial until the timer ends.</p>
       <div class="card">
-        <div class="row"><label>Style</label><select id="mock-company" class="btn"><option value="google" ${sel === 'google' ? 'selected' : ''}>Google (graphs, DP, follow-ups)</option><option value="apple" ${sel === 'apple' ? 'selected' : ''}>Apple (arrays, strings, lists, design)</option></select>
+        <div class="row"><label>Style</label><select id="mock-company" class="btn"><option value="google" ${sel === 'google' ? 'selected' : ''}>Google (graphs, DP, follow-ups)</option><option value="apple" ${sel === 'apple' ? 'selected' : ''}>Apple (arrays, strings, lists, design)</option><option value="apple-mle" ${sel === 'apple-mle' ? 'selected' : ''}>Apple MLE (implement ML routines)</option></select>
         <button class="btn primary" id="mock-start">Start new mock</button>${mock ? '<button class="btn" id="mock-end">End current mock</button>' : ''}</div>
         <div id="mock-body" style="margin-top:14px">${mock ? renderMock(mock) : '<p class="muted">No mock in progress.</p>'}</div>
       </div>

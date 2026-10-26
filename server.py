@@ -20,6 +20,7 @@ import bank  # noqa: E402
 import progress  # noqa: E402
 import tracks  # noqa: E402
 import patterns  # noqa: E402
+import apple_mle  # noqa: E402
 from judge import run_code  # noqa: E402
 
 PROBLEMS = bank.load_all()
@@ -125,10 +126,19 @@ class Handler(SimpleHTTPRequestHandler):
             return self._json(t)
         if path == "/api/patterns":
             return self._json({"patterns": patterns.PATTERNS})
+        if path == "/api/apple-mle":
+            data = dict(apple_mle.APPLE_MLE)
+            data["plan"] = [dict(w, problems=[{"id": i, "title": BY_ID[i]["title"], "difficulty": BY_ID[i]["difficulty"], "pattern": BY_ID[i]["pattern"], "status": prog.get(i, {}).get("status")} for i in w["problems"] if i in BY_ID]) for w in data["plan"]]
+            data["coding"] = [summary(p, prog) for p in PROBLEMS if p["pattern"] == "ML Coding"]
+            return self._json(data)
         if path == "/api/plan":
             return self._json(tracks.study_plan(PROBLEMS, prog))
         if path == "/api/mock":
             company = url.query.replace("company=", "") or "google"
+            if company == "apple-mle":
+                pool = [{"id": p["id"], "number": p["number"], "title": p["title"], "difficulty": p["difficulty"], "pattern": p["pattern"]} for p in PROBLEMS if p["pattern"] == "ML Coding"]
+                pick = random.sample(pool, min(2, len(pool)))
+                return self._json({"company": company, "problems": pick, "minutes": 45})
             t = tracks.company_track(PROBLEMS, company)
             pool = [i for i in t["must_do"] + t["also"] if i["difficulty"] != "Easy"] or t["all_by_frequency"]
             pick = random.sample(pool, min(2, len(pool)))
