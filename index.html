@@ -98,9 +98,9 @@ table.plist td.status { width: 36px; text-align: center; }
 .chips { display: flex; gap: 4px; flex-wrap: wrap; }
 
 /* problem page */
-.workspace { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 48px); }
+.workspace { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 48px); min-width: 0; }
 @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; height: auto; } .workspace .pane { height: auto; min-height: 50vh; } }
-.pane { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border); background: var(--panel); }
+.pane { display: flex; flex-direction: column; min-height: 0; min-width: 0; border-right: 1px solid var(--border); background: var(--panel); }
 .pane:last-child { border-right: 0; }
 .pane-tabs { display: flex; gap: 2px; padding: 6px 8px 0; border-bottom: 1px solid var(--border); background: var(--bg); flex-shrink: 0; align-items: center; }
 .pane-tabs button { background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); padding: 8px 10px; font-weight: 500; }
@@ -182,6 +182,7 @@ html, body { height: 100%; }
     <a href="#/patterns" data-nav="/patterns">Patterns</a>
     <a href="#/track/google" data-nav="/track/google">Google</a>
     <a href="#/track/apple" data-nav="/track/apple">Apple</a>
+    <a href="#/apple-mle" data-nav="/apple-mle">Apple MLE</a>
     <a href="#/mock" data-nav="/mock">Mock</a>
   </nav>
   <div class="spacer"></div>
@@ -199,13 +200,13 @@ html, body { height: 100%; }
 (function () {
   const TIMEOUT_MS = 12000;
   const PKEY = 'prepcode:progress';
-  let index = null, tracksData = null, patternsData = null;
+  let index = null, tracksData = null, patternsData = null, mleData = null;
   const problemCache = {};
 
   const fetchJson = (u) => fetch(u).then(r => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); });
   async function loadIndex() {
     if (!index) {
-      [index, tracksData, patternsData] = await Promise.all([fetchJson('data/index.json'), fetchJson('data/tracks.json'), fetchJson('data/patterns.json')]);
+      [index, tracksData, patternsData, mleData] = await Promise.all([fetchJson('data/index.json'), fetchJson('data/tracks.json'), fetchJson('data/patterns.json'), fetchJson('data/apple-mle.json')]);
     }
     return index;
   }
@@ -314,7 +315,15 @@ html, body { height: 100%; }
   function compare(expected, actual, mode, tol) {
     tol = tol || 1e-5;
     if (mode === 'any_of') return expected.some(e => compare(e, actual, 'exact', tol));
-    if (mode === 'float') { try { if (Array.isArray(expected)) return expected.length === actual.length && expected.every((a, i) => Math.abs(+a - +actual[i]) <= tol); return Math.abs(+expected - +actual) <= tol; } catch { return false; } }
+    if (mode === 'float') {
+      const close = (a, b) => {
+        if (Array.isArray(a) || Array.isArray(b)) return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((x, i) => close(x, b[i]));
+        if (a && typeof a === 'object' || b && typeof b === 'object') { if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false; const ka = Object.keys(a).sort(), kb = Object.keys(b).sort(); return ka.join() === kb.join() && ka.every(k => close(a[k], b[k])); }
+        if (typeof a === 'boolean' || typeof a === 'string' || a === null || typeof b === 'boolean' || typeof b === 'string' || b === null) return a === b;
+        const x = +a, y = +b; return Number.isFinite(x) && Number.isFinite(y) && Math.abs(x - y) <= tol;
+      };
+      return close(expected, actual);
+    }
     if (mode === 'unordered' || mode === 'unordered_nested') { const a = norm(expected, mode), b = norm(actual, mode); return a.length === b.length && a.every((x, i) => x === b[i]); }
     return JSON.stringify(expected) === JSON.stringify(actual);
   }
@@ -357,7 +366,13 @@ html, body { height: 100%; }
       if (path.startsWith('/api/track/')) return companyTrack(idx.problems, path.split('/')[3]);
       if (path === '/api/plan') return studyPlan(idx.problems);
       if (path === '/api/patterns') return patternsData;
-      if (path === '/api/mock') { const company = (qs || '').replace('company=', '') || 'google'; const t = companyTrack(idx.problems, company); const pool = [...t.must_do, ...t.also].filter(p => p.difficulty !== 'Easy'); const pick = []; const src = pool.length ? [...pool] : [...t.all_by_frequency]; while (pick.length < 2 && src.length) pick.push(src.splice(Math.floor(Math.random() * src.length), 1)[0]); return { company, problems: pick, minutes: 45 }; }
+      if (path === '/api/apple-mle') {
+        const byId = Object.fromEntries(idx.problems.map(p => [p.id, p]));
+        const plan = mleData.plan.map(w => ({ ...w, problems: w.problems.filter(i => byId[i]).map(i => ({ id: i, title: byId[i].title, difficulty: byId[i].difficulty, pattern: byId[i].pattern, status: (prog[i] || {}).status })) }));
+        return { ...mleData, plan, coding: idx.problems.filter(p => p.pattern === 'ML Coding').map(p => summary(p, prog)) };
+      }
+      if (path === '/api/mock') { const company = (qs || '').replace('company=', '') || 'google';
+        if (company === 'apple-mle') { const src = idx.problems.filter(p => p.pattern === 'ML Coding').map(p => ({ id: p.id, number: p.number, title: p.title, difficulty: p.difficulty, pattern: p.pattern })); const pick = []; while (pick.length < 2 && src.length) pick.push(src.splice(Math.floor(Math.random() * src.length), 1)[0]); return { company, problems: pick, minutes: 45 }; } const t = companyTrack(idx.problems, company); const pool = [...t.must_do, ...t.also].filter(p => p.difficulty !== 'Easy'); const pick = []; const src = pool.length ? [...pool] : [...t.all_by_frequency]; while (pick.length < 2 && src.length) pick.push(src.splice(Math.floor(Math.random() * src.length), 1)[0]); return { company, problems: pick, minutes: 45 }; }
       return { error: 'unknown endpoint' };
     },
     async post(url, body) {
@@ -769,15 +784,65 @@ html, body { height: 100%; }
     </div>`;
   });
 
+  // ---------- Apple MLE track ----------
+  route(/^\/apple-mle$/, async () => {
+    const d = await api.get('/api/apple-mle');
+    const cats = [...new Set(d.questions.map(q => q.category))];
+    const openCat = store.get('mle-cat', cats[0]);
+    const solvedCoding = d.coding.filter(p => p.status === 'solved').length;
+    app.innerHTML = `<div class="page">
+      <h1>Apple MLE interview prep</h1>
+      <p class="lead">${esc(d.intro)}</p>
+      <div class="notice">Based on public interview reports, Apple's published ML research and developer documentation. Apple does not publish its loop and teams differ, so treat the process as the common shape, not a guarantee.</div>
+
+      <h2>Teams and what they ask about</h2>
+      <div class="grid cols-2">${d.areas.map(a => `<div class="card"><b>${esc(a.name)}</b><p class="small muted" style="margin:6px 0 0">${esc(a.focus)}</p></div>`).join('')}</div>
+
+      <h2>The loop</h2>
+      ${d.process.map((s, i) => `<details class="week" ${i === 0 ? 'open' : ''}><summary>${esc(s.stage)}</summary><p>${esc(s.what)}</p><div class="sec-title">How to prepare</div><p>${esc(s.prep)}</p></details>`).join('')}
+
+      <h2>Study guide by topic</h2>
+      <p class="muted small">Each topic says why Apple cares, what to study, and the things you must be able to do without notes.</p>
+      ${d.topics.map(t => `<details class="week"><summary>${esc(t.name)}</summary><p class="muted">${esc(t.why)}</p><div class="sec-title">Study</div><ul class="plain">${t.study.map(x => `<li>${esc(x)}</li>`).join('')}</ul><div class="sec-title">Must be able to</div><ul class="plain">${t.must_know.map(x => `<li><b>${esc(x)}</b></li>`).join('')}</ul></details>`).join('')}
+
+      <h2>ML coding problems <span class="pill ${solvedCoding === d.coding.length && d.coding.length ? 'easy' : ''}">${solvedCoding}/${d.coding.length}</span></h2>
+      <p class="muted small">Implement-from-scratch routines that come up in Apple MLE coding rounds, graded by the judge. Pure Python, no numpy, like a live interview editor.</p>
+      <div class="card"><ul class="track-list">${d.coding.map(p => `<li>${statusIcon(p.status)}<a href="#/problem/${p.id}">${p.number}. ${esc(p.title)}</a>${diffPill(p.difficulty)}<span class="small muted">${p.tags.slice(0, 3).map(esc).join(' · ')}</span></li>`).join('')}</ul>
+      <div class="row" style="margin-top:10px"><a class="btn sm" href="#/mock?company=apple-mle">Start an ML coding mock</a></div></div>
+
+      <h2>Question bank <span class="pill">${d.questions.length}</span></h2>
+      <p class="muted small">Answer out loud before opening the model answer. Aim for under two minutes each.</p>
+      <div class="case-tabs" id="mle-cats">${cats.map(c => `<button data-cat="${esc(c)}" class="${c === openCat ? 'active' : ''}">${esc(c)} <span class="muted">${d.questions.filter(q => q.category === c).length}</span></button>`).join('')}</div>
+      <div id="mle-questions"></div>
+
+      <h2>ML system design prompts</h2>
+      <p class="muted small">Work each one on a whiteboard for 35 minutes before opening the outline.</p>
+      ${d.design.map(x => `<details class="week"><summary>${esc(x.title)}</summary><p><b>Prompt.</b> ${esc(x.prompt)}</p><div class="sec-title">Answer outline</div><ol class="steps">${x.outline.map(o => `<li>${esc(o)}</li>`).join('')}</ol></details>`).join('')}
+
+      <h2>4-week plan</h2>
+      ${d.plan.map(w => { const done = w.problems.filter(p => p.status === 'solved').length; return `<details class="week" ${w.week === 1 ? 'open' : ''}><summary>Week ${w.week}: ${esc(w.title)}<span class="pill ${done === w.problems.length && w.problems.length ? 'easy' : ''}">${done}/${w.problems.length}</span></summary><ul class="plain">${w.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul><div class="sec-title">Problems this week</div><ul class="track-list">${w.problems.map(p => `<li>${statusIcon(p.status)}<a href="#/problem/${p.id}">${esc(p.title)}</a>${diffPill(p.difficulty)}<span class="small muted">${esc(p.pattern)}</span></li>`).join('')}</ul></details>`; }).join('')}
+
+      <h2>Resources</h2>
+      <div class="card"><ul class="plain">${d.resources.map(r => `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a> <span class="muted small">${esc(r.why)}</span></li>`).join('')}</ul></div>
+    </div>`;
+    function drawQuestions(cat) {
+      store.set('mle-cat', cat);
+      $('#mle-cats').querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+      $('#mle-questions').innerHTML = d.questions.filter(q => q.category === cat).map((q, i) => `<details class="hint"><summary>${i + 1}. ${esc(q.q)}</summary><p>${esc(q.a)}</p></details>`).join('');
+    }
+    $('#mle-cats').querySelectorAll('button').forEach(b => b.onclick = () => drawQuestions(b.dataset.cat));
+    drawQuestions(cats.includes(openCat) ? openCat : cats[0]);
+  });
+
   // ---------- mock interview ----------
-  route(/^\/mock(?:\?company=(\w+))?$/, async (company) => {
+  route(/^\/mock(?:\?company=([\w-]+))?$/, async (company) => {
     const mock = store.get('mock', null);
     const sel = company || (mock && mock.company) || 'google';
     app.innerHTML = `<div class="page">
       <h1>Mock interview</h1>
       <p class="lead">Two problems, 45 minutes, like a real loop round. Talk out loud, state the brute force, ask clarifying questions to yourself, and only run the code when you believe it is correct. No hints, no editorial until the timer ends.</p>
       <div class="card">
-        <div class="row"><label>Style</label><select id="mock-company" class="btn"><option value="google" ${sel === 'google' ? 'selected' : ''}>Google (graphs, DP, follow-ups)</option><option value="apple" ${sel === 'apple' ? 'selected' : ''}>Apple (arrays, strings, lists, design)</option></select>
+        <div class="row"><label>Style</label><select id="mock-company" class="btn"><option value="google" ${sel === 'google' ? 'selected' : ''}>Google (graphs, DP, follow-ups)</option><option value="apple" ${sel === 'apple' ? 'selected' : ''}>Apple (arrays, strings, lists, design)</option><option value="apple-mle" ${sel === 'apple-mle' ? 'selected' : ''}>Apple MLE (implement ML routines)</option></select>
         <button class="btn primary" id="mock-start">Start new mock</button>${mock ? '<button class="btn" id="mock-end">End current mock</button>' : ''}</div>
         <div id="mock-body" style="margin-top:14px">${mock ? renderMock(mock) : '<p class="muted">No mock in progress.</p>'}</div>
       </div>
