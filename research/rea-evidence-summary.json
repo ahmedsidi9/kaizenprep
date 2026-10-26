@@ -1,0 +1,425 @@
+{
+ "tool": "REA 6.8.0 (rea inspect-web-page, analyze-web-bundle, capture-web-screenshot) over Chrome DevTools Protocol",
+ "target": {
+  "target_id": "FEDE0D8F0516D26F9E1F1FCD8BAA23A9",
+  "type": "page",
+  "title": "Two Sum - LeetCode",
+  "url": "https://leetcode.com/problems/two-sum/description/",
+  "origin": "https://leetcode.com",
+  "attached": null
+ },
+ "evidence_ids": {
+  "inspect_web_page": "ev_23a144564de6bd69e2af518b7584798da80cde44a5141099313b3b85bee50c1b",
+  "analyze_web_bundle": "ev_f8312df92a03634e725d7398794b566f51a954ce22f1797d8f10fcf2c87472d7"
+ },
+ "dom_total_nodes": 2362,
+ "accessibility_total_nodes": 1840,
+ "interactive_elements": [
+  {
+   "role": "button",
+   "name": "Problem List, Expand Panel"
+  },
+  {
+   "role": "link",
+   "name": "Prev Question"
+  },
+  {
+   "role": "link",
+   "name": "Next Question"
+  },
+  {
+   "role": "link",
+   "name": "Pick one"
+  },
+  {
+   "role": "link",
+   "name": "LeetCode Logo"
+  },
+  {
+   "role": "button",
+   "name": "Layouts"
+  },
+  {
+   "role": "button",
+   "name": "Settings"
+  },
+  {
+   "role": "link",
+   "name": "Register"
+  },
+  {
+   "role": "button",
+   "name": "Log in"
+  },
+  {
+   "role": "button",
+   "name": "70.9K"
+  },
+  {
+   "role": "button",
+   "name": "2.2K"
+  },
+  {
+   "role": "textbox",
+   "name": "Search questions"
+  },
+  {
+   "role": "button",
+   "name": "Note"
+  },
+  {
+   "role": "button",
+   "name": "Ask Leet"
+  },
+  {
+   "role": "link",
+   "name": "Premium"
+  },
+  {
+   "role": "heading",
+   "name": "1. Two Sum"
+  },
+  {
+   "role": "link",
+   "name": "log in / sign up"
+  },
+  {
+   "role": "button",
+   "name": "Case 1"
+  },
+  {
+   "role": "button",
+   "name": "Case 2"
+  },
+  {
+   "role": "button",
+   "name": "Case 3"
+  },
+  {
+   "role": "link",
+   "name": "1. Two Sum"
+  },
+  {
+   "role": "link",
+   "name": "Array"
+  },
+  {
+   "role": "link",
+   "name": "Hash Table"
+  },
+  {
+   "role": "link",
+   "name": "Vinay Kumar pat"
+  },
+  {
+   "role": "link",
+   "name": "CafogarN4"
+  },
+  {
+   "role": "link",
+   "name": "winstonchi"
+  },
+  {
+   "role": "link",
+   "name": "Nayev_Simpler"
+  },
+  {
+   "role": "link",
+   "name": "AlexTheGreat"
+  },
+  {
+   "role": "link",
+   "name": "Ming Yue"
+  },
+  {
+   "role": "link",
+   "name": "shaguv"
+  },
+  {
+   "role": "link",
+   "name": "Mikhail Lachikhin"
+  },
+  {
+   "role": "link",
+   "name": "Humberto Lagomarsino"
+  },
+  {
+   "role": "link",
+   "name": "wlxwolves"
+  },
+  {
+   "role": "button",
+   "name": "C++"
+  },
+  {
+   "role": "button",
+   "name": "Auto"
+  },
+  {
+   "role": "button",
+   "name": "Stopwatch"
+  },
+  {
+   "role": "link",
+   "name": "3Sum"
+  },
+  {
+   "role": "link",
+   "name": "4Sum"
+  },
+  {
+   "role": "link",
+   "name": "Two Sum II - Input Array Is Sorted"
+  },
+  {
+   "role": "link",
+   "name": "Two Sum III - Data structure design"
+  },
+  {
+   "role": "link",
+   "name": "Subarray Sum Equals K"
+  },
+  {
+   "role": "link",
+   "name": "Two Sum IV - Input is a BST"
+  },
+  {
+   "role": "link",
+   "name": "Two Sum Less Than K"
+  },
+  {
+   "role": "link",
+   "name": "Max Number of K-Sum Pairs"
+  },
+  {
+   "role": "link",
+   "name": "Count Good Meals"
+  },
+  {
+   "role": "link",
+   "name": "Count Number of Pairs With Absolute Difference K"
+  },
+  {
+   "role": "link",
+   "name": "Number of Pairs of Strings With Concatenation Equal to Target"
+  },
+  {
+   "role": "link",
+   "name": "Find All K-Distant Indices in an Array"
+  },
+  {
+   "role": "link",
+   "name": "First Letter to Appear Twice"
+  },
+  {
+   "role": "link",
+   "name": "Number of Excellent Pairs"
+  },
+  {
+   "role": "link",
+   "name": "Number of Arithmetic Triplets"
+  },
+  {
+   "role": "link",
+   "name": "Node With Highest Edge Score"
+  },
+  {
+   "role": "link",
+   "name": "Check Distances Between Same Letters"
+  },
+  {
+   "role": "link",
+   "name": "Find Subarrays With Equal Sum"
+  },
+  {
+   "role": "link",
+   "name": "Largest Positive Integer That Exists With Its Negative"
+  },
+  {
+   "role": "link",
+   "name": "Number of Distinct Averages"
+  },
+  {
+   "role": "link",
+   "name": "Count Pairs Whose Sum is Less than Target"
+  },
+  {
+   "role": "textbox",
+   "name": "Type comment here..."
+  },
+  {
+   "role": "button",
+   "name": "Sort by:Best"
+  },
+  {
+   "role": "button",
+   "name": "prev"
+  },
+  {
+   "role": "button",
+   "name": "1"
+  },
+  {
+   "role": "button",
+   "name": "2"
+  },
+  {
+   "role": "button",
+   "name": "3"
+  },
+  {
+   "role": "button",
+   "name": "4"
+  },
+  {
+   "role": "button",
+   "name": "5"
+  },
+  {
+   "role": "button",
+   "name": "6"
+  },
+  {
+   "role": "button",
+   "name": "gap"
+  },
+  {
+   "role": "button",
+   "name": "221"
+  },
+  {
+   "role": "button",
+   "name": "next"
+  },
+  {
+   "role": "button",
+   "name": "You need to log in / sign up to debug"
+  },
+  {
+   "role": "button",
+   "name": "Comment"
+  },
+  {
+   "role": "button",
+   "name": "Run"
+  },
+  {
+   "role": "button",
+   "name": "Submit"
+  },
+  {
+   "role": "textbox",
+   "name": "Code editor"
+  },
+  {
+   "role": "link",
+   "name": "image"
+  },
+  {
+   "role": "button",
+   "name": "Choose a type"
+  }
+ ],
+ "storage": {
+  "origin": "https://leetcode.com",
+  "usage_bytes": 2657,
+  "quota_bytes": 596766093312,
+  "local_storage_keys": [
+   "EDITOR_SETTING",
+   "QD_LAYOUT_JSON",
+   "QD_DISABLED_QUEST_SPOILER_ALERT",
+   "random-uuid",
+   "announcementExpiration",
+   "report_random_id",
+   "gr_imp_1078924561"
+  ],
+  "session_storage_keys": [
+   "new-query-filter"
+  ],
+  "indexed_db_names": [
+   "LeetCode-problems"
+  ],
+  "cache_names": [],
+  "content_fingerprints": [],
+  "fingerprint_algorithm": "sha256",
+  "fingerprints_complete": false,
+  "values_redacted": true
+ },
+ "workers": [],
+ "bundle": {
+  "scripts_observed": 109,
+  "routes": [
+   "/",
+   "/contest",
+   "/contest/",
+   "/contest/admin",
+   "/contest/api/reports/",
+   "/contest/dashboard",
+   "/contest/dashboard/internal-contest",
+   "/coupons",
+   "/help-center/",
+   "/problemset",
+   "/store",
+   "/store/"
+  ],
+  "vendor_fingerprints": [
+   "Next.js",
+   "React"
+  ],
+  "endpoint_candidates_low_confidence": [
+   "[...]",
+   "[[...]]",
+   "[]",
+   "\\@eqnsw",
+   "\\current@color",
+   "\\df@tag",
+   "\\|",
+   "__appToken__",
+   "baggage",
+   "codeAction",
+   "content-type",
+   "csrftoken",
+   "days",
+   "difficulty",
+   "envId",
+   "envType",
+   "favoriteSlug",
+   "hours",
+   "lang",
+   "langInfo",
+   "milliseconds",
+   "minutes",
+   "months",
+   "next-router-prefetch",
+   "premiumOnly",
+   "pythondata",
+   "questionInfo",
+   "readOnly",
+   "roomId",
+   "seconds",
+   "sentry-trace",
+   "sentry.dsc",
+   "sentry.sample_rand",
+   "sentry.sample_rate",
+   "status",
+   "traceparent",
+   "user",
+   "weeks",
+   "x-oss-process",
+   "ychange",
+   "years",
+   "{ commonBacklinkWhitelist }",
+   "|"
+  ]
+ },
+ "limitations": [
+  "Artifact identity is unavailable for this observation.",
+  "Observation starts when REA attaches; prior network and console activity is unavailable.",
+  "Worker targets are a final inventory snapshot, not worker-session observation. Their attached flag describes any debugging client; this page-session collector does not observe worker network, console, or script events, and short-lived workers may be absent from the snapshot.",
+  "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+  "Source maps are reported only as declarative URLs and are not fetched.",
+  "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+  "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+  "Browser host platform and architecture were not observed."
+ ]
+}
